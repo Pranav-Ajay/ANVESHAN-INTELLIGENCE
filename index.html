@@ -11,7 +11,8 @@
    </div>
     <div style="position:fixed; bottom:5%; right:20%;">
     <input id="a" style="width:600px; background-color:#BDC7D1; color:white; padding:10px; border-radius:20px;"><img src="microphone.png" style="border-radius:50px;" width=10 height=10>
-   </div>
+    <button onclick="execute()">-></button>
+    </div>
   <div style="top:0; right:0; position:fixed;">
     <button>Save</button> <button>New chat</button> <button>Delete Chat</button>
   </div>
@@ -19,13 +20,13 @@
   <h3>Hi, How may I help you</h3>
   </div>
   <div>
-    <h3 style="top:15%; left:50%; position:absolute; font-size:20px;"id="b"><h3></h3>
-    <script>
+    <h3 id="b" style="top:15%; left:50%; position:absolute; font-size:20px;"><h3></h3>
+    <h3 style="top:20%; right:50%; position:absolute; font-size:20px;">answer</h3>
+  </div>
+      <script>
       let element=document.getElementById("a").value;
       let element1=document.getElementById("b").value;
       element1.innerText=element2;
     </script>
-    <h3 style="top:20%; right:50%; position:absolute; font-size:20px;">answer</h3>
-  </div>
   </body>
 </html>
