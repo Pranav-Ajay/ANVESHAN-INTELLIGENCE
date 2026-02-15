@@ -4,9 +4,17 @@
   <body>
     <div style="width:450px; height:1000px; background-color:#215F9A; left:0; top:0; position:fixed;">
       <img width=400 height=400 src="AI.png">
-      <div style="bottom:40%;">
+      <div  style="bottom:40%;">
         <h2 style="color:white;">History</h2>
-        <ol></ol>
+        <ol id="y"></ol>
+        <script>
+          let e =document.getElementById("y");
+          for(i=0;i<100;i++){
+            let ele=document.createElement("ol");
+            ele.innerText="";
+            ele.appendchild("ol");}
+        </script>
+          
       </div>
     </div>
 
