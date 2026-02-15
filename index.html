@@ -30,10 +30,10 @@
   </div>
   </div>
       <script>
-       let list=document.getElementById("b");
+       let list=document.getElementById("x");
        for(let i = 0; i < 100; i++){ 
             let div = document.createElement("div");
-            div.innerText = "Item " + (i + 1);
+            div.innerText = list.innerText;
             list.appendChild(div);
         }
       function execute(){
