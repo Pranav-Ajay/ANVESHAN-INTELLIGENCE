@@ -34,9 +34,9 @@
        let element=document.getElementById("a").value;
        let element1=document.getElementById("b");
        element1.innerText=element;}
-       document.getElementById("c").addEventListener("input", answer);
-      function answer(){
-        let element2=document.getElementById("c");
+       let element2=document.getElementById("c");
+       element2.addEventListener("input", answer);
+       function answer(){
         element2.innerText="Answer";}
      </script>
   </body>
