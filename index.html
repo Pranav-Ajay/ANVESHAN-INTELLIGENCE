@@ -3,45 +3,67 @@
   <head><title>ANVESHAN INTELLIGENCE</title></head>
   <body>
     <div style="width:450px; height:1000px; background-color:#215F9A; left:0; top:0; position:fixed;">
-    <img width=400 height=400 src="AI.png">
-    <div style="botton:40%;">
-      <h2 style="color:white;">History</h2>
-      <ol></ol>
+      <img width=400 height=400 src="AI.png">
+      <div style="bottom:40%;">
+        <h2 style="color:white;">History</h2>
+        <ol></ol>
+      </div>
     </div>
-   </div>
-    <div style="position:fixed; bottom:5%; right:30%;">
-    <input id="a" style="width:600px; background-color:#BDC7D1; color:white; padding:10px; border-radius:20px;"><img src="microphone.png" style="border-radius:50px;" width=10 height=10>
-    <button onclick="execute()">-></button>
-    </div>
-  <div style="top:0; right:0; position:fixed;">
-    <button>Save</button> <button>New chat</button> <button>Delete Chat</button>
-  </div >
-  <div style="display:flex; justify-content:center;">
-  <div class="x" style="width:600px; display:flex; flex-direction:column; gap:30px;">
-  <div id="b" style="display:flex; justify-content:flex-end;">
-    <h2></h2>
-  </div>
-  <div id="c"style="display:flex; justify-content:flex-start;">
-    <h2></h2>
-  </div><br><br>
-  </div>
-  </div>
-      <script>
-      function execute(){
-       let list = document.querySelector(".x");
-        for (let i = 0; i < 2; i++) { 
-         let div = document.createElement("div");
-         div.className = "x";
-         div.innerText ="";
-         list.appendChild(div);}
-       let element=document.getElementById("a").value;
-       let element1=document.getElementById("b");
-       element1.innerText=element;
-       let element2=document.getElementById("c");
-       element2.innerText="Answer";
 
-      }
-      
-     </script>
+    <div style="position:fixed; bottom:5%; right:30%;">
+      <input id="a" style="width:600px; background-color:#BDC7D1; color:white; padding:10px; border-radius:20px;">
+      <img src="microphone.png" style="border-radius:50px;" width=10 height=10>
+      <button onclick="execute()">-></button>
+    </div>
+
+    <div style="top:0; right:0; position:fixed;">
+      <button>Save</button> 
+      <button>New chat</button> 
+      <button>Delete Chat</button>
+    </div>
+
+    <div style="display:flex; justify-content:center;">
+      <div class="x" style="width:600px; display:flex; flex-direction:column; gap:30px; margin-top:50px;">
+        
+        
+        <div style="display:flex; justify-content:flex-start;">
+          <h2>Hi, how may I help you?</h2>
+        </div>
+
+      </div>
+    </div>
+
+<script>
+function execute() {
+
+  let container = document.querySelector(".x");
+  let inputValue = document.getElementById("a").value;
+
+  if(inputValue.trim() === "") return;
+
+  let userDiv = document.createElement("div");
+  userDiv.style.display = "flex";
+  userDiv.style.justifyContent = "flex-end";
+
+  let userText = document.createElement("h2");
+  userText.innerText = inputValue;
+
+  userDiv.appendChild(userText);
+  container.appendChild(userDiv);
+
+  let botDiv = document.createElement("div");
+  botDiv.style.display = "flex";
+  botDiv.style.justifyContent = "flex-start";
+
+  let botText = document.createElement("h2");
+  botText.innerText = "Answer";
+
+  botDiv.appendChild(botText);
+  container.appendChild(botDiv);
+
+  document.getElementById("a").value = "";
+}
+</script>
+
   </body>
 </html>
