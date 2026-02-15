@@ -6,15 +6,7 @@
       <img width=400 height=400 src="AI.png">
       <div  style="bottom:40%;">
         <h2 style="color:white;">History</h2>
-        <ol id="y"></ol>
-        <script>
-          let e =document.getElementById("y");
-          for(i=0;i<100;i++){
-            let ele=document.createElement("ol");
-            ele.innerText="";
-            ele.appendchild("ol");}
-        </script>
-          
+        <ol><li id="y"></li></ol>
       </div>
     </div>
 
@@ -43,6 +35,12 @@
     </div>
 
 <script>
+     let e =document.getElementById("y");
+     for(i=0;i<100;i++){
+        let ele=document.createElement("li");
+        ele.innerText="";
+        e.appendChild(li);}
+        
 function execute() {
 
   let container = document.querySelector(".x");
