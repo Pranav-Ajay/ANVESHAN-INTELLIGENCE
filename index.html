@@ -18,9 +18,6 @@
   </div >
   <div style="display:flex; justify-content:center;">
   <div class="x" style="width:600px; display:flex; flex-direction:column; gap:30px;">
-  <div style="display:flex; justify-content:flex-start;">
-  <h3>Hi, How may I help you</h3>
-  </div>
   <div id="b" style="display:flex; justify-content:flex-end;">
     <h2></h2>
   </div>
@@ -40,11 +37,13 @@
       let list = document.querySelector(".x");
 
       let element=document.getElementById("a").value;
+      let element2=document.getElementById("c");
+      element2.innerText="Answer";
 
       for (let i = 0; i < 100; i++) { 
        let div = document.createElement("div");
        div.className = "x";
-       div.innerText ="hi";
+       div.innerText =element;
        list.appendChild(div);
       }
       
