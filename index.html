@@ -62,7 +62,15 @@
         
 function execute() {
 
-  let container = document.querySelector(".x");
+  let ele=document.querySelectorAll("details").value;
+  for i in ele{
+    if(i===""){
+      alert("Please fill out all details");}
+                                            }
+  let botText = document.createElement("h2");
+  botText.innerText = "Ok noted.Now please give the victim's statement";
+
+ let container = document.querySelector(".x");
   let inputValue = document.getElementById("a").value;
 
   if(inputValue.trim() === "") return;
