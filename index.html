@@ -1,84 +1,137 @@
 <!DOCTYPE html>
 <html>
-  <head><title>ANVESHAN INTELLIGENCE</title></head>
-  <body>
-    <div style="width:450px; height:1000px; background-color:#215F9A; left:0; top:0; position:fixed;">
-      <img width=400 height=400 src="AI.png">
-      <div  style="bottom:40%;">
-        <h2 style="color:white;">History</h2>
-        <ol id="y"><li></li></ol>
+<head>
+  <title>ANVESHAN INTELLIGENCE</title>
+</head>
+
+<body>
+
+  <!-- LEFT PANEL -->
+  <div style="width:450px; height:1000px; background-color:#215F9A; left:0; top:0; position:fixed;">
+    <img width="400" height="400" src="AI.png">
+    <div style="margin-left:20px;">
+      <h2 style="color:white;">History</h2>
+      <ol id="y"></ol>
+    </div>
+  </div>
+
+  <!-- INPUT AREA -->
+  <div style="position:fixed; bottom:5%; right:30%;">
+    <input id="a" style="width:600px; background-color:#BDC7D1; padding:10px; border-radius:20px;">
+    <img src="microphone.png" style="border-radius:50px;" width="20" height="20">
+    <button onclick="execute()">→</button>
+  </div>
+
+  <!-- TOP BUTTONS -->
+  <div style="top:0; right:0; position:fixed;">
+    <button>Save</button>
+    <button>New Chat</button>
+    <button onclick="ask()">Delete Chat</button>
+    <button>Back to Main Menu</button>
+  </div>
+
+  <!-- MAIN CHAT AREA -->
+  <div style="display:flex; justify-content:center;">
+    <div class="x" style="width:600px; display:flex; flex-direction:column; gap:30px; margin-top:50px;">
+
+      <div style="display:flex; flex-direction:column;">
+        <h2>Hi, please fill out these details</h2>
+
+        <ol id="details">
+
+          <li>Complainant Name: <input></li>
+          <li>Father/Husband Name: <input></li>
+          <li>DOB: <input type="date"></li>
+          <li>Nationality: <input></li>
+          <li>Occupation: <input></li>
+          <li>Age: <input type="number"></li>
+          <li>Gender:
+            <select>
+              <option value="">Select</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </li>
+          <li>Address: <input></li>
+          <li>Phone/Email: <input></li>
+          <li>Holiday (yes/no):
+            <select>
+              <option value="">Select</option>
+              <option>yes</option>
+              <option>no</option>
+            </select>
+          </li>
+          <li>Holiday Name: <input></li>
+          <li>Festival (yes/no):
+            <select>
+              <option value="">Select</option>
+              <option>yes</option>
+              <option>no</option>
+            </select>
+          </li>
+          <li>Festival Name: <input></li>
+          <li>Weapon Used: <input></li>
+          <li>Date: <input type="date"></li>
+          <li>Start Time: <input type="time"></li>
+          <li>End Time: <input type="time"></li>
+          <li>Time (Morning/Afternoon...): <input></li>
+          <li>Place of Incident: <input></li>
+          <li>Location of Incident: <input></li>
+          <li>Type of Incident: <input></li>
+
+        </ol>
+
+        <button onclick="check()">SUBMIT</button>
+
       </div>
-    </div>
 
-    <div style="position:fixed; bottom:5%; right:30%;">
-      <input id="a" style="width:600px; background-color:#BDC7D1; color:white; padding:10px; border-radius:20px;">
-      <img src="microphone.png" style="border-radius:50px;" width=10 height=10>
-      <button onclick="execute()">-></button>
     </div>
-
-    <div style="top:0; right:0; position:fixed;">
-      <button>Save</button> 
-      <button>New chat</button> 
-      <button onclick="ask()">Delete Chat</button>
-      <button onclick="rate()">Back to main menu</button>
-    </div>
-
-    <div style="display:flex; justify-content:center;">
-      <div class="x" style="width:600px; display:flex; flex-direction:column; gap:30px; margin-top:50px;">
-        
-        
-        <div style="display:flex; justify-content:flex-start;">
-          <h2>Hi, please fill out these details</h2><br><br>
-          <ol id="details">
-          <li>Complainant Name:<input id="1"></li>
-          <li>Father/Husband Name:<input id="2"></li>
-          <li>DOB:<input id="3" type="date"></li>
-          <li>Nationality:<input id="4"></li>
-          <li>Occupation:<input id="5"></li>
-          <li>Age:<input id="6" type="number"</li>
-          <li>Gender:<select id="7"><option>Male</option><option>Female</option><option>Other</option></select></li></li>
-          <li>Address:<input id="8"></li>
-          <li>Phone/Email:<input id="9"></li>
-          <li>Holiday(yes/no):<select id="10"><option>yes</option><option>no</option></select></li>
-          <li>Holiday name:<input id="11"></li>
-          <li>Festival(yes/no):<select id="12"><option>yes</option><option>no</option></select></li></li>
-          <li>Festival name:<input id="13"></li>
-          <li>Weapon used:<input id="14"></li>
-          <li>Date:<input id="15" type="date"></li>
-          <li>Start Time:<input id="16" type="time"></li>
-          <li>End Time:<input id="17" type="time"></li>
-          <li>Time(Morning/Afternoon...):<input id="18"></li>
-          <li>Place of Incident:<input id="19"></li>
-          <li>Location of Incident:<input id="20"></li>
-          <li>Type of Incident:<input id="21"></li>
-          </ol>
-          <button onclick="check()">SUBMIT</button>
-        </div>
-
-      </div>
-    </div>
+  </div>
 
 <script>
-        
-function check(){
-            
-  let ele=document.querySelectorAll("details").value;
-  for i in ele{
-    if(i===""){
-      alert("Please fill out all details");}
-                                            }
-  
+
+function check() {
+
+  let inputs = document.querySelectorAll("#details input, #details select");
+  let allFilled = true;
+
+  inputs.forEach(function(input) {
+
+    if (input.value.trim() === "") {
+      input.style.border = "2px solid red";
+      allFilled = false;
+    } else {
+      input.style.border = "";
+    }
+
+  });
+
+  if (!allFilled) {
+    alert("Please fill out all details");
+    return;
+  }
+
+  let container = document.querySelector(".x");
+
+  let botDiv = document.createElement("div");
+  botDiv.style.display = "flex";
+  botDiv.style.justifyContent = "flex-start";
+
   let botText = document.createElement("h2");
-  botText.innerText = "Ok noted.Now please give the victim's statement";}
-    
-        
+  botText.innerText = "Ok noted. Now please give the victim's statement.";
+
+  botDiv.appendChild(botText);
+  container.appendChild(botDiv);
+}
+
 function execute() {
 
   let container = document.querySelector(".x");
   let inputValue = document.getElementById("a").value;
 
-  if(inputValue.trim() === "") return;
-  
+  if (inputValue.trim() === "") return;
+
   let userDiv = document.createElement("div");
   userDiv.style.display = "flex";
   userDiv.style.justifyContent = "flex-end";
@@ -101,14 +154,15 @@ function execute() {
 
   document.getElementById("a").value = "";
 }
-function ask(){
-  let outcome=confirm("Are you sure you want to delete this chat?Data in this chat will be permanentely deleted.");
-  if(outcome==true){
-    window.location.href="index.html";}
+
+function ask() {
+  let outcome = confirm("Are you sure you want to delete this chat? Data in this chat will be permanently deleted.");
+  if (outcome === true) {
+    window.location.href = "index.html";
+  }
 }
-    
-  
+
 </script>
 
-  </body>
+</body>
 </html>
