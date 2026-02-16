@@ -29,7 +29,7 @@
         
         <div style="display:flex; justify-content:flex-start;">
           <h2>Hi, please fill out these details</h2><br><br>
-          <ol>
+          <ol id="details">
           <li>Complainant Name:<input id="1"></li>
           <li>Father/Husband Name:<input id="2"></li>
           <li>DOB:<input id="3" type="date"></li>
@@ -71,6 +71,11 @@ function execute() {
 
   if(inputValue.trim() === "") return;
 
+  let ele=document.querySelectorAll("details").value;
+  for i in ele:
+   if(i==""){
+     alert("Please fill out all the details");}
+  
   let userDiv = document.createElement("div");
   userDiv.style.display = "flex";
   userDiv.style.justifyContent = "flex-end";
