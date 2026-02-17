@@ -1,3 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ANVESHAN INTELLIGENCE</title>
+</head>
+
+<body>
+
+<div style="width:450px; height:1000px; background-color:#215F9A; left:0; top:0; position:fixed;">
+  <img width="400" height="400" src="AI.png">
+  <div style="margin-left:20px;">
+    <h2 style="color:white;">History</h2>
+    <ol id="y"></ol>
+  </div>
+</div>
+
+<div style="width:450px; height:1000px; background-color:#215F9A; right:0; top:0; position:fixed;">
+  <div style="right:7%; top:10%; position:fixed;">
+    <img id="ds" width=200 height=250><br><br><br><br>
+    Name:<p id="k"></p><br><br>
+    Contact:<p id="l"></p><br><br>
+    Email:<p id="m"></p><br><br>
+    Signature:<br><br><img id="de" width=200 height=100>
+  </div>
+</div>
+
+<div style="position:fixed; bottom:5%; right:30%;">
+  <!-- CHANGED ID HERE -->
+  <input id="chatInput" style="width:600px; background-color:#BDC7D1; padding:10px; border-radius:20px;">
+  <button onclick="execute()">→</button>
+</div>
+
+<div style="bottom:0; position:fixed; left:0;width:100%;background-color:blue;color:white;display:flex;justify-content:center;align-items:center;padding:10px;text-align:center;">
+  Anveshan Intelligence can make mistakes, please use it carefully.
+</div>
+
+<div style="display:flex; justify-content:center;">
+  <div class="x" style="width:600px; display:flex; flex-direction:column; gap:30px; margin-top:50px; height:800px">
+
+    <div style="display:flex; flex-direction:column;">
+      <h2>Hi, please fill out these details</h2>
+
+      <ol id="details">
+
+        <li>Complainant Name: <input id="complainantName"></li>
+        <li>Father/Husband Name: <input></li>
+        <li>DOB: <input type="date" id="dob"></li>
+        <li>Nationality: <input></li>
+        <li>Occupation: <input></li>
+        <li>Age: <input type="number" id="age"></li>
+        <li>Gender:
+          <select>
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </li>
+        <li>Address: <input></li>
+        <li>Phone/Email: <input></li>
+        <li>Holiday:
+          <select id="holiday">
+            <option value="">Select</option>
+            <option>yes</option>
+            <option>no</option>
+          </select>
+        </li>
+        <li>Holiday Name: <input></li>
+        <li>Festival:
+          <select id="festival">
+            <option value="">Select</option>
+            <option>yes</option>
+            <option>no</option>
+          </select>
+        </li>
+        <li>Festival Name: <input></li>
+        <li>Weapon Used: <input id="weaponUsed"></li>
+        <li>Date: <input type="date" id="date"></li>
+        <li>Start Time: <input type="time" id="startTime"></li>
+        <li>End Time: <input type="time" id="endTime"></li>
+        <li>Time (Morning/Afternoon...): <input></li>
+        <li>Place of Incident: <input></li>
+        <li>Location of Incident: <input id="location"></li>
+        <li>Type of Incident: <input id="incidentType"></li>
+
+      </ol>
+
+      <button onclick="check()">SUBMIT</button>
+
+    </div>
+
+  </div>
+</div>
+
 <script>
 
 /* ================= PROFILE LOAD ================= */
