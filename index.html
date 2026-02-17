@@ -148,6 +148,7 @@ function check() {
 
   let botText = document.createElement("h2");
   botText.innerText = answer();
+  
 
   botDiv.appendChild(botText);
   container.appendChild(botDiv);
@@ -238,6 +239,17 @@ function execute() {
 
   if (inputValue.trim() === "") return;
 
+  let botDiv = document.createElement("div");
+  botDiv.style.display = "flex";
+  botDiv.style.justifyContent = "flex-start";
+
+  let botText = document.createElement("h2");
+  botText.innerText="ok, please give the victim's statement";
+
+  
+  botDiv.appendChild(botText);
+  container.appendChild(botDiv);
+
   let userDiv = document.createElement("div");
   userDiv.style.display = "flex";
   userDiv.style.justifyContent = "flex-end";
@@ -253,8 +265,14 @@ function execute() {
   botDiv.style.justifyContent = "flex-start";
 
   let botText = document.createElement("h2");
-  botText.innerText = "Answer";
-
+  if(userText.innerText==="yes"){
+    botText.innerText="Ok,please give your victim's statement";}
+  else if(userText.innerText==="no"){
+     botText.innerText="Ok, does the victim have any friends or families?";}
+  else{
+     botText.innerText="pardon?";}
+  
+    
   botDiv.appendChild(botText);
   container.appendChild(botDiv);
 
