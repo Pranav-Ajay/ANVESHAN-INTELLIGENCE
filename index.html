@@ -123,6 +123,26 @@
   q.innerText=t;
   r.innerText=u;
 
+  let er=document.getElementById("ds");
+  let er1=localStorage.getItem("profilePic");
+  er.src=er1;
+
+  let er2=document.getElementById("de");
+  let er3=localStorage.getItem("signaturePic");
+  er2.src=er3;
+
+  let p=document.getElementById("k");
+  let q=document.getElementById("l");
+  let r=document.getElementById("m");
+
+  let s=localStorage.getItem("username1");
+  let t=localStorage.getItem("username2");
+  let u=localStorage.getItem("username4");
+
+  p.innerText=s;
+  q.innerText=t;
+  r.innerText=u;
+
 function check() {
 
   let inputs = document.querySelectorAll("#details input, #details select");
@@ -258,11 +278,11 @@ function execute() {
   userDiv.appendChild(userText);
   container.appendChild(userDiv);
 
-  let botDiv = document.createElement("div");
+  let botDiv1 = document.createElement("div");
   botDiv.style.display = "flex";
   botDiv.style.justifyContent = "flex-start";
 
-  let botText = document.createElement("h2");
+  let botText1 = document.createElement("h2");
   if(inputValue==="yes"){
     botText.innerText="Ok,please give your victim's statement";}
   else if(inputValue==="no"){
