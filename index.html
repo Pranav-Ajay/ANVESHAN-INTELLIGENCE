@@ -139,7 +139,6 @@ function check() {
 
   });
 
-
   let container = document.querySelector(".x");
 
   let botDiv = document.createElement("div");
@@ -148,7 +147,16 @@ function check() {
 
   let botText = document.createElement("h2");
   botText.innerText = answer();
-  
+
+  botDiv.appendChild(botText);
+  container.appendChild(botDiv);
+
+  let botDiv = document.createElement("div");
+  botDiv.style.display = "flex";
+  botDiv.style.justifyContent = "flex-start";
+
+  let botText = document.createElement("h2");
+  botText.innerText ="Is the victim alive?;
 
   botDiv.appendChild(botText);
   container.appendChild(botDiv);
@@ -238,17 +246,7 @@ function execute() {
   let inputValue = document.getElementById("a").value;
 
   if (inputValue.trim() === "") return;
-
-  let botDiv = document.createElement("div");
-  botDiv.style.display = "flex";
-  botDiv.style.justifyContent = "flex-start";
-
-  let botText = document.createElement("h2");
-  botText.innerText="ok, please give the victim's statement";
-
-  
-  botDiv.appendChild(botText);
-  container.appendChild(botDiv);
+;
 
   let userDiv = document.createElement("div");
   userDiv.style.display = "flex";
@@ -265,9 +263,9 @@ function execute() {
   botDiv.style.justifyContent = "flex-start";
 
   let botText = document.createElement("h2");
-  if(userText.innerText==="yes"){
+  if(inputValue==="yes"){
     botText.innerText="Ok,please give your victim's statement";}
-  else if(userText.innerText==="no"){
+  else if(inputValue==="no"){
      botText.innerText="Ok, does the victim have any friends or families?";}
   else{
      botText.innerText="pardon?";}
