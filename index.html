@@ -51,13 +51,13 @@
 
         <ol id="details">
 
-          <li>Complainant Name: <input></li>
-          <li>Father/Husband Name: <input></li>
-          <li>DOB: <input type="date"></li>
-          <li>Nationality: <input></li>
-          <li>Occupation: <input></li>
-          <li>Age: <input type="number"></li>
-          <li>Gender:
+          <li id="a">Complainant Name: <input></li>
+          <li id="b">Father/Husband Name: <input></li>
+          <li id="c">DOB: <input type="date"></li>
+          <li id="d">Nationality: <input></li>
+          <li id="e">Occupation: <input></li>
+          <li id="f">Age: <input type="number"></li>
+          <li id="g">Gender:
             <select>
               <option value="">Select</option>
               <option>Male</option>
@@ -65,32 +65,32 @@
               <option>Other</option>
             </select>
           </li>
-          <li>Address: <input></li>
-          <li>Phone/Email: <input></li>
-          <li>Holiday (yes/no):
+          <li id="h">Address: <input></li>
+          <li id="i">Phone/Email: <input></li>
+          <li id="j">Holiday (yes/no):
             <select>
               <option value="">Select</option>
               <option>yes</option>
               <option>no</option>
             </select>
           </li>
-          <li>Holiday Name: <input></li>
-          <li>Festival (yes/no):
+          <li id="k">Holiday Name: <input></li>
+          <li id="l">Festival (yes/no):
             <select>
               <option value="">Select</option>
               <option>yes</option>
               <option>no</option>
             </select>
           </li>
-          <li>Festival Name: <input></li>
-          <li>Weapon Used: <input></li>
-          <li>Date: <input type="date"></li>
-          <li>Start Time: <input type="time"></li>
-          <li>End Time: <input type="time"></li>
-          <li>Time (Morning/Afternoon...): <input></li>
-          <li>Place of Incident: <input></li>
-          <li>Location of Incident: <input></li>
-          <li>Type of Incident: <input></li>
+          <li id="m">Festival Name: <input></li>
+          <li id="n">Weapon Used: <input></li>
+          <li id="o">Date: <input type="date"></li>
+          <li id="p">Start Time: <input type="time"></li>
+          <li id="q">End Time: <input type="time"></li>
+          <li id="r">Time (Morning/Afternoon...): <input></li>
+          <li id="s">Place of Incident: <input></li>
+          <li id="t">Location of Incident: <input></li>
+          <li id="u">Type of Incident: <input></li>
 
         </ol>
 
@@ -147,10 +147,88 @@ function check() {
   botDiv.style.justifyContent = "flex-start";
 
   let botText = document.createElement("h2");
-  botText.innerText = "Ok noted. Now please give the victim's statement.";
+  botText.innerText = answer();
 
   botDiv.appendChild(botText);
   container.appendChild(botDiv);
+}
+
+function answer(){
+      const data = {
+        complainantName: document.getElementById("a")?.value || "",
+        dob: document.getElementById("c")?.value || "",
+        age: document.getElementById("f")?.value || "",
+        date: document.getElementById("o")?.value || "",
+        startTime: document.getElementById("p")?.value || "",
+        endTime: document.getElementById("q")?.value || "",
+        weaponUsed: document.getElementById("n")?.value || "",
+        incidentType: document.getElementById("u")?.value || "",
+        location: document.getElementById("t")?.value || "",
+        festival: document.getElementById("l")?.value || "no",
+        holiday: document.getElementById("j")?.value || "no"
+    };
+
+    let inconsistencies = [];
+    let warnings = [];
+    let confidenceScore = 100;
+
+    if (data.dob && data.age) {
+        const birthYear = new Date(data.dob).getFullYear();
+        const currentYear = new Date().getFullYear();
+        const calculatedAge = currentYear - birthYear;
+
+        if (Math.abs(calculatedAge - parseInt(data.age)) > 1) {
+            inconsistencies.push("Age does not match Date of Birth.");
+            confidenceScore -= 15;
+        }
+    }
+
+    if (data.startTime && data.endTime) {
+        if (data.startTime > data.endTime) {
+            inconsistencies.push("Start time is later than End time.");
+            confidenceScore -= 20;
+        }
+    }
+
+    const seriousCrimes = ["murder", "attempt to murder", "armed robbery"];
+    if (seriousCrimes.includes(data.incidentType.toLowerCase()) && data.weaponUsed.trim() === "") {
+        warnings.push("Serious crime reported without weapon specification.");
+        confidenceScore -= 10;
+    }
+
+    if (data.festival === "yes" && data.holiday === "no") {
+        warnings.push("Festival marked yes but holiday marked no. Verify context.");
+        confidenceScore -= 5;
+    }
+
+    if (!data.incidentType) {
+        inconsistencies.push("Incident type missing.");
+        confidenceScore -= 15;
+    }
+
+    if (!data.location) {
+        inconsistencies.push("Location of incident missing.");
+        confidenceScore -= 15;
+    }
+
+    if (!data.date) {
+        inconsistencies.push("Incident date missing.");
+        confidenceScore -= 15;
+    }
+
+    const TCI_Result = {
+        model: "TCI - Internal Consistency Analysis",
+        extractedData: data,
+        inconsistenciesFound: inconsistencies,
+        warnings: warnings,
+        consistencyScore: confidenceScore,
+        status: inconsistencies.length === 0 ? 
+                "Internally Consistent" : 
+                "Inconsistencies Detected"
+    };
+
+    console.log("TCI Output:", TCI_Result);
+    return TCI_Result;
 }
 
 function execute() {
