@@ -1,147 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>ANVESHAN INTELLIGENCE</title>
-</head>
-
-<body>
-
-  <div style="width:450px; height:1000px; background-color:#215F9A; left:0; top:0; position:fixed;">
-    <img width="400" height="400" src="AI.png">
-    <div style="margin-left:20px;">
-      <h2 style="color:white;">History</h2>
-      <ol id="y"></ol>
-    </div>
-    <div style="bottom:5%; position:fixed; left:0.3%;">
-    <button onclick="img(event)">Change profile pic</button> <button onclick="img2(event)">Change signature</button> <button onclick="change3()">Change Password</button> <button onclick="logout()">Logout</button>
-    </div>
-  </div>
-
-  <div style="width:450px; height:1000px; background-color:#215F9A; right:0; top:0; position:fixed; text-align:centre;">
-     <div style="top:0; right:6%; position:fixed;">
-    <button>Save</button>
-    <button>New Chat</button>
-    <button onclick="ask()">Delete Chat</button>
-  </div>
-    <div style="right:7%; top:10%; position:fixed;">
-      <img id="ds" width=200 height=250><br><br><br><br>
-      Name:<p id="k"></p><br><br>
-      Contact:<p id="l"></p><br><br>
-      Email:<p id="m"></p><br><br>
-      Signature:<br><br><img id="de" width=200 height=100>
-    </div>
- </div>
-
-    <div style="position:fixed; bottom:5%; right:30%;">
-    <input id="a" style="width:600px; background-color:#BDC7D1; padding:10px; border-radius:20px;">
-    <img src="microphone.png" style="border-radius:50px;" width="20" height="20">
-    <button onclick="execute()">→</button>
-  </div>
-
-  <div style="bottom:0; position:fixed; left:0;width:100%;background-color:blue;color:white;display:flex;justify-content:center;align-items:center;padding:10px;text-align:center;">
-    Anveshan Intelligence can make mistakes, please use it carefully.
-  </div>
-
-
-  <div style="display:flex; justify-content:center;">
-    <div class="x" style="width:600px; display:flex; flex-direction:column; gap:30px; margin-top:50px; height:800px">
-
-      <div style="display:flex; flex-direction:column;">
-        <h2>Hi, please fill out these details</h2>
-
-        <ol id="details">
-
-          <li id="a">Complainant Name: <input></li>
-          <li id="b">Father/Husband Name: <input></li>
-          <li id="c">DOB: <input type="date"></li>
-          <li id="d">Nationality: <input></li>
-          <li id="e">Occupation: <input></li>
-          <li id="f">Age: <input type="number"></li>
-          <li id="g">Gender:
-            <select>
-              <option value="">Select</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </li>
-          <li id="h">Address: <input></li>
-          <li id="i">Phone/Email: <input></li>
-          <li id="j">Holiday (yes/no):
-            <select>
-              <option value="">Select</option>
-              <option>yes</option>
-              <option>no</option>
-            </select>
-          </li>
-          <li id="k">Holiday Name: <input></li>
-          <li id="l">Festival (yes/no):
-            <select>
-              <option value="">Select</option>
-              <option>yes</option>
-              <option>no</option>
-            </select>
-          </li>
-          <li id="m">Festival Name: <input></li>
-          <li id="n">Weapon Used: <input></li>
-          <li id="o">Date: <input type="date"></li>
-          <li id="p">Start Time: <input type="time"></li>
-          <li id="q">End Time: <input type="time"></li>
-          <li id="r">Time (Morning/Afternoon...): <input></li>
-          <li id="s">Place of Incident: <input></li>
-          <li id="t">Location of Incident: <input></li>
-          <li id="u">Type of Incident: <input></li>
-
-        </ol>
-
-        <button onclick="check()">SUBMIT</button>
-
-      </div>
-
-    </div>
-  </div>
-
 <script>
 
-  let er=document.getElementById("ds");
-  let er1=localStorage.getItem("profilePic");
-  er.src=er1;
+/* ================= PROFILE LOAD ================= */
 
-  let er2=document.getElementById("de");
-  let er3=localStorage.getItem("signaturePic");
-  er2.src=er3;
+let profileImg = document.getElementById("ds");
+profileImg.src = localStorage.getItem("profilePic");
 
-  let p=document.getElementById("k");
-  let q=document.getElementById("l");
-  let r=document.getElementById("m");
+let signImg = document.getElementById("de");
+signImg.src = localStorage.getItem("signaturePic");
 
-  let s=localStorage.getItem("username1");
-  let t=localStorage.getItem("username2");
-  let u=localStorage.getItem("username4");
+document.getElementById("k").innerText = localStorage.getItem("username1");
+document.getElementById("l").innerText = localStorage.getItem("username2");
+document.getElementById("m").innerText = localStorage.getItem("username4");
 
-  p.innerText=s;
-  q.innerText=t;
-  r.innerText=u;
-
-  let er=document.getElementById("ds");
-  let er1=localStorage.getItem("profilePic");
-  er.src=er1;
-
-  let er2=document.getElementById("de");
-  let er3=localStorage.getItem("signaturePic");
-  er2.src=er3;
-
-  let p=document.getElementById("k");
-  let q=document.getElementById("l");
-  let r=document.getElementById("m");
-
-  let s=localStorage.getItem("username1");
-  let t=localStorage.getItem("username2");
-  let u=localStorage.getItem("username4");
-
-  p.innerText=s;
-  q.innerText=t;
-  r.innerText=u;
+/* ================= TCI CHECK FUNCTION ================= */
 
 function check() {
 
@@ -149,15 +20,17 @@ function check() {
   let allFilled = true;
 
   inputs.forEach(function(input) {
-
     if (input.value.trim() === "") {
       input.style.border = "2px solid red";
       allFilled = false;
     } else {
       input.style.border = "";
     }
-
   });
+
+  if (!allFilled) return;
+
+  let result = answer();
 
   let container = document.querySelector(".x");
 
@@ -165,108 +38,103 @@ function check() {
   botDiv.style.display = "flex";
   botDiv.style.justifyContent = "flex-start";
 
-  let botText = document.createElement("h2");
-  botText.innerText = answer();
+  let botText = document.createElement("pre");
+  botText.innerText =
+    "TCI RESULT\n" +
+    "Status: " + result.status + "\n" +
+    "Score: " + result.consistencyScore + "%\n" +
+    "Issues: " +
+    (result.inconsistenciesFound.length
+      ? result.inconsistenciesFound.join(", ")
+      : "None");
 
   botDiv.appendChild(botText);
   container.appendChild(botDiv);
 
-  let botDiv = document.createElement("div");
-  botDiv.style.display = "flex";
-  botDiv.style.justifyContent = "flex-start";
+  /* Ask victim status */
+  let statusDiv = document.createElement("div");
+  statusDiv.style.display = "flex";
+  statusDiv.style.justifyContent = "flex-start";
 
-  let botText = document.createElement("h2");
-  botText.innerText ="Is the victim alive?";
+  let statusText = document.createElement("h2");
+  statusText.innerText = "Is the victim alive?";
 
-  botDiv.appendChild(botText);
-  container.appendChild(botDiv);
+  statusDiv.appendChild(statusText);
+  container.appendChild(statusDiv);
 }
 
-function answer(){
-      const data = {
-        complainantName: document.getElementById("a")?.value || "",
-        dob: document.getElementById("c")?.value || "",
-        age: document.getElementById("f")?.value || "",
-        date: document.getElementById("o")?.value || "",
-        startTime: document.getElementById("p")?.value || "",
-        endTime: document.getElementById("q")?.value || "",
-        weaponUsed: document.getElementById("n")?.value || "",
-        incidentType: document.getElementById("u")?.value || "",
-        location: document.getElementById("t")?.value || "",
-        festival: document.getElementById("l")?.value || "no",
-        holiday: document.getElementById("j")?.value || "no"
-    };
+/* ================= TCI MODEL ================= */
 
-    let inconsistencies = [];
-    let warnings = [];
-    let confidenceScore = 100;
+function answer() {
 
-    if (data.dob && data.age) {
-        const birthYear = new Date(data.dob).getFullYear();
-        const currentYear = new Date().getFullYear();
-        const calculatedAge = currentYear - birthYear;
+  const data = {
+    complainantName: document.querySelector("#details li:nth-child(1) input")?.value || "",
+    dob: document.querySelector("#details li:nth-child(3) input")?.value || "",
+    age: document.querySelector("#details li:nth-child(6) input")?.value || "",
+    date: document.querySelector("#details li:nth-child(15) input")?.value || "",
+    startTime: document.querySelector("#details li:nth-child(16) input")?.value || "",
+    endTime: document.querySelector("#details li:nth-child(17) input")?.value || "",
+    weaponUsed: document.querySelector("#details li:nth-child(14) input")?.value || "",
+    incidentType: document.querySelector("#details li:nth-child(20) input")?.value || "",
+    location: document.querySelector("#details li:nth-child(19) input")?.value || ""
+  };
 
-        if (Math.abs(calculatedAge - parseInt(data.age)) > 1) {
-            inconsistencies.push("Age does not match Date of Birth.");
-            confidenceScore -= 15;
-        }
+  let inconsistencies = [];
+  let confidenceScore = 100;
+
+  /* Age validation */
+  if (data.dob && data.age) {
+    const birthYear = new Date(data.dob).getFullYear();
+    const currentYear = new Date().getFullYear();
+    const calculatedAge = currentYear - birthYear;
+
+    if (Math.abs(calculatedAge - parseInt(data.age)) > 1) {
+      inconsistencies.push("Age does not match DOB.");
+      confidenceScore -= 15;
     }
+  }
 
-    if (data.startTime && data.endTime) {
-        if (data.startTime > data.endTime) {
-            inconsistencies.push("Start time is later than End time.");
-            confidenceScore -= 20;
-        }
-    }
+  /* Time validation */
+  if (data.startTime && data.endTime && data.startTime > data.endTime) {
+    inconsistencies.push("Start time is later than End time.");
+    confidenceScore -= 20;
+  }
 
-    const seriousCrimes = ["murder", "attempt to murder", "armed robbery"];
-    if (seriousCrimes.includes(data.incidentType.toLowerCase()) && data.weaponUsed.trim() === "") {
-        warnings.push("Serious crime reported without weapon specification.");
-        confidenceScore -= 10;
-    }
+  if (!data.incidentType) {
+    inconsistencies.push("Incident type missing.");
+    confidenceScore -= 15;
+  }
 
-    if (data.festival === "yes" && data.holiday === "no") {
-        warnings.push("Festival marked yes but holiday marked no. Verify context.");
-        confidenceScore -= 5;
-    }
+  if (!data.location) {
+    inconsistencies.push("Location missing.");
+    confidenceScore -= 15;
+  }
 
-    if (!data.incidentType) {
-        inconsistencies.push("Incident type missing.");
-        confidenceScore -= 15;
-    }
+  if (!data.date) {
+    inconsistencies.push("Incident date missing.");
+    confidenceScore -= 15;
+  }
 
-    if (!data.location) {
-        inconsistencies.push("Location of incident missing.");
-        confidenceScore -= 15;
-    }
-
-    if (!data.date) {
-        inconsistencies.push("Incident date missing.");
-        confidenceScore -= 15;
-    }
-
-    const TCI_Result = {
-        model: "TCI - Internal Consistency Analysis",
-        extractedData: data,
-        inconsistenciesFound: inconsistencies,
-        warnings: warnings,
-        consistencyScore: confidenceScore,
-        status: inconsistencies.length === 0 ? 
-                "Internally Consistent" : 
-                "Inconsistencies Detected"
-    };
-
-    console.log("TCI Output:", TCI_Result);
-    return TCI_Result;
+  return {
+    model: "TCI - Internal Consistency",
+    extractedData: data,
+    inconsistenciesFound: inconsistencies,
+    consistencyScore: confidenceScore,
+    status:
+      inconsistencies.length === 0
+        ? "Internally Consistent"
+        : "Inconsistencies Detected"
+  };
 }
+
+/* ================= CHAT SYSTEM ================= */
 
 function execute() {
 
   let container = document.querySelector(".x");
-  let inputValue = document.getElementById("a").value;
+  let inputValue = document.getElementById("chatInput").value.trim().toLowerCase();
 
-  if (inputValue.trim() === "") return;
-;
+  if (!inputValue) return;
 
   let userDiv = document.createElement("div");
   userDiv.style.display = "flex";
@@ -278,100 +146,43 @@ function execute() {
   userDiv.appendChild(userText);
   container.appendChild(userDiv);
 
-  let botDiv1 = document.createElement("div");
+  let botDiv = document.createElement("div");
   botDiv.style.display = "flex";
   botDiv.style.justifyContent = "flex-start";
 
-  let botText1 = document.createElement("h2");
-  if(inputValue==="yes"){
-    botText.innerText="Ok,please give your victim's statement";}
-  else if(inputValue==="no"){
-     botText.innerText="Ok, does the victim have any friends or families?";}
-  else{
-     botText.innerText="pardon?";}
-  
-    
+  let botText = document.createElement("h2");
+
+  if (inputValue === "yes") {
+    botText.innerText = "Ok, please give victim's statement.";
+  } 
+  else if (inputValue === "no") {
+    botText.innerText = "Proceed to evidence collection.";
+  } 
+  else {
+    botText.innerText = "Please answer yes or no.";
+  }
+
   botDiv.appendChild(botText);
   container.appendChild(botDiv);
 
-  document.getElementById("a").value = "";
+  document.getElementById("chatInput").value = "";
 }
+
+/* ================= DELETE CHAT ================= */
 
 function ask() {
-  let outcome = confirm("Are you sure you want to delete this chat? Data in this chat will be permanently deleted.");
-  if (outcome === true) {
-    window.location.href = "chatbot.html";
-  }
+  let outcome = confirm("Are you sure you want to delete this chat?");
+  if (outcome) window.location.href = "chatbot.html";
 }
 
-  function logout(){
-    let res=confirm("Are you sure you want to log out?You can lose your conversation");
-    if(res===true){
-      localStorage.removeItem("username1");
-      localStorage.removeItem("username2");
-      localStorage.removeItem("username3");
-      localStorage.removeItem("username4");
-      localStorage.removeItem("profilePic");
-      localStorage.removeItem("signaturePic");
-      window.location.href = "index.html";}
-    
-                                           }
+/* ================= LOGOUT ================= */
 
-  function img(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const validTypes = ["image/jpeg", "image/png"];
-  if (!validTypes.includes(file.type)) {
-    alert("Please select JPG or PNG image.");
-    event.target.value = "";
-    return;
+function logout() {
+  let res = confirm("Are you sure you want to log out?");
+  if (res) {
+    localStorage.clear();
+    window.location.href = "index.html";
   }
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-  const imgData = e.target.result;
-
-
-   localStorage.setItem("profilePic", imgData);
-    
-  };
-
-  reader.readAsDataURL(file);
- 
 }
-
- let er4=localStorage.getItem("profilePic");
- er.src=er4;
-
-function img2(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const validTypes = ["image/jpeg", "image/png"];
-  if (!validTypes.includes(file.type)) {
-    alert("Please select JPG or PNG image.");
-    event.target.value = "";
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-  const imgData1 = e.target.result;
-
-   
-  localStorage.setItem("signaturePic", imgData1);
-    
-  };
-
-  reader.readAsDataURL(file); 
-}
-
-  let er5=localStorage.getItem("signaturePic");
-  er2.src=er5;
 
 </script>
-
-</body>
-</html>
-
