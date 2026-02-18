@@ -365,44 +365,26 @@ function updateFromPoliceAnswer(answer){
   answer = answer.trim();
   if(!answer) return;
 
-  // add this answer into statement pool so RLE can extract more
   caseData.StatementUsed += " " + answer;
 
-  // update suspect if interview was pending
+  // FIX: store CCTV evidence and move stage forward
+  if(caseData.stage === "evidence"){
+      caseData.externalEvidence = answer;
+      caseData.stage = "analysis";
+      return;
+  }
+
   let pendingIndex = caseData.RLE.suspects.findIndex(s=>!s.interviewStatement);
+
   if(pendingIndex !== -1){
-    let suspect = caseData.RLE.suspects[pendingIndex];
-    suspect.interviewStatement = answer;
+      let suspect = caseData.RLE.suspects[pendingIndex];
+      suspect.interviewStatement = answer;
 
-    if(answer.toLowerCase().includes("alone")){
-      suspect.alibiWeak = true;
-      suspect.contradictions = suspect.contradictions || [];
-      suspect.contradictions.push("Weak alibi: claims alone.");
-    }
-
-    // Extract extra leads from interview
-    let tmpCase = {StatementUsed: answer};
-    tmpCase = RLE(tmpCase);
-
-    tmpCase.RLE.suspects.forEach(ns=>{
-      if(!caseData.RLE.suspects.some(x=>x.name.toLowerCase()===ns.name.toLowerCase())){
-        caseData.RLE.suspects.push({
-          name: ns.name,
-          reason: "Mentioned in suspect interview",
-          location: ns.location,
-          traits: ns.traits,
-          evidenceScore: 10
-        });
+      if(answer.toLowerCase().includes("alone")){
+          suspect.alibiWeak = true;
+          suspect.contradictions = suspect.contradictions || [];
+          suspect.contradictions.push("Weak alibi: claims alone.");
       }
-    });
-
-    // Add traits to current suspect
-    tmpCase.RLE.traits.forEach(t=>{
-      if(!suspect.traits.includes(t)) suspect.traits.push(t);
-    });
-
-    // Add location if missing
-    if(!suspect.location && tmpCase.RLE.locations.length>0) suspect.location = tmpCase.RLE.locations[0];
   }
 }
 
