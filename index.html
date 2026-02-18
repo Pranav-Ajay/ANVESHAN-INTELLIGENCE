@@ -358,6 +358,15 @@ function policeQuestionEngine(){
     return "Case is ready for conclusion. Would you like to mark the case as solved?";
   }
 
+  if(caseData.stage === "final"){
+    return "Final ranking generated. Investigation complete.";
+}
+
+if(caseData.stage === "recheck"){
+    caseData.stage = "interview";
+    return "Re-check initiated. Provide additional suspect statement or correction.";
+}
+
   return "Investigation ongoing. Provide more inputs.";
 }
 
@@ -367,13 +376,36 @@ function updateFromPoliceAnswer(answer){
 
   caseData.StatementUsed += " " + answer;
 
-  // FIX: store CCTV evidence and move stage forward
+  // ---------------------------
+  // ANALYSIS STAGE USER DECISION
+  // ---------------------------
+  if(caseData.stage === "analysis"){
+    if(answer.toLowerCase().includes("final")){
+        caseData.stage = "final";
+        return;
+    }
+    else if(answer.toLowerCase().includes("re-check") || answer.toLowerCase().includes("recheck")){
+        caseData.stage = "recheck";
+        return;
+    }
+    else{
+        // if user says something unclear
+        return;
+    }
+  }
+
+  // ---------------------------
+  // EVIDENCE STAGE
+  // ---------------------------
   if(caseData.stage === "evidence"){
       caseData.externalEvidence = answer;
       caseData.stage = "analysis";
       return;
   }
 
+  // ---------------------------
+  // INTERVIEW STAGE
+  // ---------------------------
   let pendingIndex = caseData.RLE.suspects.findIndex(s=>!s.interviewStatement);
 
   if(pendingIndex !== -1){
@@ -387,7 +419,6 @@ function updateFromPoliceAnswer(answer){
       }
   }
 }
-
 /* ==========================
    RENDER OUTPUT
 ========================== */
