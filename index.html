@@ -33,18 +33,18 @@
 
 
 <div style="position:absolute; left:30%;">
-  <div class="x" style="width:300px; gap:30px; margin-top:50px; height:800px">
+  <div class="x">
     
     <div style="display:flex; flex-direction:column;">
       <h2>Hi, please fill out these details</h2>
 
       <ol id="details">
-        <li>Complainant Name: <input id="complainantName" width=200></li>
-        <li>Father/Husband Name: <input  width=200></li>
-        <li>DOB: <input type="date" id="dob" width=200></li>
-        <li>Nationality: <input width=200></li>
-        <li>Occupation: <input width=200></li>
-        <li>Age: <input type="number" id="age" width=200></li>
+        <li>Complainant Name: <input id="complainantName" width=200></li><br><br>
+        <li>Father/Husband Name: <input  width=200></li><br><br>
+        <li>DOB: <input type="date" id="dob" width=200></li><br><br>
+        <li>Nationality: <input width=200></li><br><br>
+        <li>Occupation: <input width=200></li><br><br>
+        <li>Age: <input type="number" id="age" width=200></li><br><br>
         <li>Gender:
           <select>
             <option value="">Select</option>
@@ -52,39 +52,39 @@
             <option>Female</option>
             <option>Other</option>
           </select>
-        </li>
-        <li>Address: <input  width=200></li>
-        <li>Phone/Email: <input  width=200></li>
+        </li><br><br>
+        <li>Address: <input  width=200></li><br><br>
+        <li>Phone/Email: <input  width=200></li><br><br>
         <li>Holiday:
           <select id="holiday">
             <option value="">Select</option>
             <option>yes</option>
             <option>no</option>
           </select>
-        </li>
-        <li>Holiday Name: <input  width=200></li>
+        </li><br><br>
+        <li>Holiday Name: <input  width=200></li><br><br>
         <li>Festival:
           <select id="festival">
             <option value="">Select</option>
             <option>yes</option>
             <option>no</option>
           </select>
-        </li>
-        <li>Festival Name: <input  width=200></li>
-        <li>Weapon Used: <input id="weaponUsed"  width=200></li>
-        <li>Date: <input type="date" id="date"  width=200></li>
-        <li>Start Time: <input type="time" id="startTime"  width=200></li>
-        <li>End Time: <input type="time" id="endTime"  width=200></li>
-        <li>Time (Morning/Afternoon...): <input  width=200></li>
-        <li>Place of Incident: <input  width=200></li>
-        <li>Location of Incident: <input id="location"  width=200></li>
-        <li>Type of Incident: <input id="incidentType"  width=200></li>
-      </ol></div></div>
+        </li><br><br>
+        <li>Festival Name: <input  width=200></li><br><br>
+        <li>Weapon Used: <input id="weaponUsed"  width=200></li><br><br>
+        <li>Date: <input type="date" id="date"  width=200></li><br><br>
+        <li>Start Time: <input type="time" id="startTime"  width=200></li><br><br>
+        <li>End Time: <input type="time" id="endTime"  width=200></li><br><br>
+        <li>Time (Morning/Afternoon...): <input  width=200></li><br><br>
+        <li>Place of Incident: <input  width=200></li><br><br>
+        <li>Location of Incident: <input id="location"  width=200></li><br><br>
+        <li>Type of Incident: <input id="incidentType"  width=200></li><br><br>
+      </ol>
 
-      <div width=600><h3>FIR Details</h3>
+      <h3>FIR Details</h3>
       <textarea id="firDetails"  width=600></textarea>
 
-      <h3>Is the victim alive?</h3>
+      <h3  width=200>Is the victim alive?</h3>
       <select id="victimAlive">
         <option value="">Select</option>
         <option value="yes">Yes</option>
@@ -98,6 +98,7 @@
       <button onclick="caseController()">Run Investigation</button>
       <div id="output"></div>
 
+    </div>
     </div>
     </div>
 
