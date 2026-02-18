@@ -99,7 +99,6 @@
       </select>
 
       <div id="dynamicSection"></div>
-      <div id="suspectInterviewSection"></div>
 
       <br><br>
        <button onclick="caseController()">Generate FIR</button><button onclick="caseController()">Run Investigation</button>
@@ -490,7 +489,6 @@ function updatePipeline(){
 
   localStorage.setItem("Current_Case",JSON.stringify(caseData));
   renderOutput();
-  SIM();
 }
 
 function execute(){
