@@ -307,29 +307,58 @@ function EAS(caseData){
 /* ==========================
    POLICE ITERATIVE ENGINE
 ========================== */
-
 function policeQuestionEngine(){
+
+  // initialize stage
+  if(!caseData.stage) caseData.stage = "interview";
+
   // contradictions based follow-ups
   if(caseData.TCI?.issues?.length){
+    caseData.stage = "contradiction";
     return "Your FIR has contradictions: " + caseData.TCI.issues.join(" | ") + ". Please clarify correct details.";
   }
+
   if(caseData.TCA?.contradictions?.length){
+    caseData.stage = "contradiction";
     return "Contradiction found between FIR and statement: " + caseData.TCA.contradictions.join(" | ") + ". Which is correct?";
   }
 
   // if no suspects
   if(!caseData.RLE?.suspects || caseData.RLE.suspects.length===0){
-    return "No suspects identified. Did victim mention any name, relationship, or dispute?";
+    caseData.stage = "suspect_discovery";
+    return "No suspects identified. Did the victim mention any name, relationship, or dispute?";
   }
 
-  // if suspects exist but no interview done
-  let pending = caseData.RLE.suspects.find(s=>!s.interviewStatement);
-  if(pending){
-    return `Interview suspect ${pending.name}: Where were you during the incident time (${caseData.Date || "Unknown Date"} ${caseData.Time || ""})? Provide alibi.`;
+  // interview stage
+  if(caseData.stage === "interview"){
+    let pending = caseData.RLE.suspects.find(s=>!s.interviewStatement);
+    if(pending){
+      return `Interview suspect ${pending.name}: Where were you during the incident time (${caseData.Date || "Unknown Date"} ${caseData.Time || ""})? Provide alibi.`;
+    }else{
+      caseData.stage = "evidence";
+    }
   }
 
-  // if all suspects interviewed
-  return "All suspects interviewed. Do you have CCTV evidence, call records, or witness names to verify alibis?";
+  // evidence stage
+  if(caseData.stage === "evidence"){
+    if(!caseData.externalEvidence){
+      return "All suspects interviewed. Do you have CCTV evidence, call records, or witness names to verify alibis?";
+    }else{
+      caseData.stage = "analysis";
+    }
+  }
+
+  // analysis stage
+  if(caseData.stage === "analysis"){
+    return "Evidence recorded. Do you want to re-check suspects or finalize the probability ranking?";
+  }
+
+  // final stage
+  if(caseData.stage === "conclusion"){
+    return "Case is ready for conclusion. Would you like to mark the case as solved?";
+  }
+
+  return "Investigation ongoing. Provide more inputs.";
 }
 
 function updateFromPoliceAnswer(answer){
