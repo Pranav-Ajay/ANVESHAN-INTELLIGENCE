@@ -469,10 +469,31 @@ function saveInterview(index){
     alert(`Statement for ${s.name} saved. Evidence scores updated.`);
 }
 
+function mergeSuspects(oldSuspects, newSuspects){
+  newSuspects.forEach(ns=>{
+    let existing = oldSuspects.find(os=>os.name.toLowerCase() === ns.name.toLowerCase());
+    if(existing){
+      ns.interviewStatement = existing.interviewStatement || ns.interviewStatement;
+      ns.alibiWeak = existing.alibiWeak || ns.alibiWeak;
+      ns.contradictions = existing.contradictions || ns.contradictions;
+    }
+  });
+  return newSuspects;
+}
+
 function updatePipeline(){
+  let oldSuspects = caseData.RLE?.suspects ? JSON.parse(JSON.stringify(caseData.RLE.suspects)) : [];
+
   caseData = TCI(caseData);
   caseData = TCA(caseData);
+
   caseData = RLE(caseData);
+
+  // MERGE interviews back after RLE refresh
+  if(oldSuspects.length > 0){
+    caseData.RLE.suspects = mergeSuspects(oldSuspects, caseData.RLE.suspects);
+  }
+
   caseData = FCI(caseData);
   caseData = EAS(caseData);
 
@@ -543,6 +564,8 @@ function caseController(){
     // fallback
     alert("Enter answer in chat input.");
 }
+
+
 </script>
 </body>
 </html>
