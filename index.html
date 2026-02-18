@@ -3,26 +3,32 @@
 <head>
   <title>ANVESHAN INTELLIGENCE</title>
   <style>
-    body { font-family: Arial, sans-serif; }
+    body { font-family: Arial, sans-serif; margin:0; padding:0; }
     input, select, textarea { margin-bottom: 10px; padding: 5px; width: 100%; }
-    button { padding: 8px 12px; margin-top: 5px; }
-    .suspect-section { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
-    #output { margin-top: 20px; padding: 10px; border: 1px solid #aaa; background: #f9f9f9; }
+    button { padding: 8px 12px; margin-top: 5px; cursor:pointer; }
+    .suspect-section { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; background:#f4f4f4; border-radius:8px; }
+    #output { margin-top: 20px; padding: 10px; border: 1px solid #aaa; background: #f9f9f9; border-radius:10px; }
+    #chatArea { padding: 10px; border: 1px solid #aaa; background: white; height: 250px; overflow-y: auto; border-radius: 10px; }
+
+    .botMsg { background:#dbeeff; padding:10px; border-radius:10px; margin:5px 0; width:80%; }
+    .userMsg { background:#d7ffd7; padding:10px; border-radius:10px; margin:5px 0; width:80%; margin-left:auto; text-align:right; }
   </style>
 </head>
 
 <body>
 
+<!-- LEFT PANEL -->
 <div style="width:450px; height:1000px; background-color:#215F9A; left:0; top:0; position:fixed;">
   <img width="400" height="400" src="AI.png">
   <div style="margin-left:20px;">
     <h2 style="color:white;">History</h2>
-    <ol id="y"></ol>
+    <ol id="y" style="color:white;"></ol>
   </div>
 </div>
 
+<!-- RIGHT PANEL -->
 <div style="width:450px; height:1000px; background-color:#215F9A; right:0; top:0; position:fixed;">
-  <div style="right:7%; top:10%; position:fixed;">
+  <div style="right:7%; top:10%; position:fixed; color:white;">
     <img id="ds" width=200 height=250><br><br><br><br>
     Name:<p id="k"></p><br><br>
     Contact:<p id="l"></p><br><br>
@@ -31,285 +37,402 @@
   </div>
 </div>
 
+<!-- BOTTOM CHAT INPUT -->
 <div style="position:fixed; bottom:5%; right:30%;">
-  <input id="chatInput" style="width:600px; background-color:#BDC7D1; padding:10px; border-radius:20px;">
-  <button onclick="caseController()">→</button>
+  <input id="chatInput" style="width:600px; background-color:#BDC7D1; padding:10px; border-radius:20px;" placeholder="Answer here...">
+  <button onclick="sendAnswer()">→</button>
 </div>
 
+<!-- FOOTER -->
 <div style="bottom:0; position:fixed; left:0;width:100%;background-color:blue;color:white;display:flex;justify-content:center;align-items:center;padding:10px;text-align:center;">
   Anveshan Intelligence can make mistakes, please use it carefully.
 </div>
 
+<!-- MAIN CENTER -->
 <div style="display:flex; justify-content:center;">
   <div class="x" style="width:600px; display:flex; flex-direction:column; gap:30px; margin-top:50px; height:800px">
-    
-    <div style="display:flex; flex-direction:column;">
-      <h2>Hi, please fill out these details</h2>
 
-      <ol id="details">
-        <li>Complainant Name: <input id="complainantName"></li>
-        <li>Father/Husband Name: <input></li>
-        <li>DOB: <input type="date" id="dob"></li>
-        <li>Nationality: <input></li>
-        <li>Occupation: <input></li>
-        <li>Age: <input type="number" id="age"></li>
-        <li>Gender:
-          <select>
-            <option value="">Select</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-        </li>
-        <li>Address: <input></li>
-        <li>Phone/Email: <input></li>
-        <li>Holiday:
-          <select id="holiday">
-            <option value="">Select</option>
-            <option>yes</option>
-            <option>no</option>
-          </select>
-        </li>
-        <li>Holiday Name: <input></li>
-        <li>Festival:
-          <select id="festival">
-            <option value="">Select</option>
-            <option>yes</option>
-            <option>no</option>
-          </select>
-        </li>
-        <li>Festival Name: <input></li>
-        <li>Weapon Used: <input id="weaponUsed"></li>
-        <li>Date: <input type="date" id="date"></li>
-        <li>Start Time: <input type="time" id="startTime"></li>
-        <li>End Time: <input type="time" id="endTime"></li>
-        <li>Time (Morning/Afternoon...): <input></li>
-        <li>Place of Incident: <input></li>
-        <li>Location of Incident: <input id="location"></li>
-        <li>Type of Incident: <input id="incidentType"></li>
-      </ol>
+    <h2>ANVESHAN Investigation Assistant</h2>
 
-      <h3>FIR Details</h3>
-      <textarea id="firDetails"></textarea>
-
-      <h3>Is the victim alive?</h3>
-      <select id="victimAlive">
-        <option value="">Select</option>
-        <option value="yes">Yes</option>
-        <option value="no">No</option>
-      </select>
-
-      <div id="dynamicSection"></div>
-      <div id="suspectInterviewSection"></div>
-
-      <br><br>
-      <button onclick="caseController()">Run Investigation</button>
-      <div id="output"></div>
-
+    <div>
+      <h3>Police Conversation</h3>
+      <div id="chatArea"></div>
     </div>
+
+    <div>
+      <h3>Investigation Report (Live Dashboard)</h3>
+      <div id="output"></div>
+    </div>
+
+    <div>
+      <h3>Suspect Interviews</h3>
+      <div id="suspectInterviewSection"></div>
+    </div>
+
   </div>
 </div>
 
 <script>
-let caseData = {};
+let caseData = {
+  FIR: "",
+  incident: {},
+  victim: {},
+  suspects: [],
+  chatHistory: [],
+  stage: "FIR",
+  currentSuspectIndex: 0
+};
 
-document.getElementById("victimAlive").addEventListener("change", function() {
-    let status = this.value;
-    let section = document.getElementById("dynamicSection");
+let questionFlow = [
+  { key: "FIR", question: "Provide FIR details (full text)." },
+  { key: "incidentType", question: "What type of incident is it? (Murder/Theft/Assault/etc.)" },
+  { key: "location", question: "Where did the incident happen? (exact place)" },
+  { key: "date", question: "What is the date of incident?" },
+  { key: "time", question: "What is the approximate time of incident?" },
+  { key: "weapon", question: "Was any weapon used? If yes, which weapon?" },
+  { key: "victimAlive", question: "Is the victim alive? (yes/no)" },
+  { key: "statement", question: "Provide the victim/witness statement describing the incident." }
+];
 
-    if (status === "yes") {
-        section.innerHTML = `<h3>Victim Statement</h3><textarea id="victimStatement"></textarea>`;
-    } else if (status === "no") {
-        section.innerHTML = `<h3>Who filed the FIR on behalf of the victim?</h3>
-                             <input type="text" id="firFiler">
-                             <h3>Enter that person's statement</h3>
-                             <textarea id="proxyStatement"></textarea>`;
+let currentQuestionIndex = 0;
+
+function addMessage(text, sender){
+  let chatArea = document.getElementById("chatArea");
+  let div = document.createElement("div");
+  div.className = sender === "bot" ? "botMsg" : "userMsg";
+  div.innerText = text;
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  caseData.chatHistory.push(sender.toUpperCase() + ": " + text);
+  updateHistoryPanel();
+}
+
+function updateHistoryPanel(){
+  let y = document.getElementById("y");
+  y.innerHTML = "";
+  caseData.chatHistory.slice(-10).forEach(item=>{
+    let li = document.createElement("li");
+    li.innerText = item;
+    y.appendChild(li);
+  });
+}
+
+function askNextQuestion(){
+  if(currentQuestionIndex < questionFlow.length){
+    addMessage(questionFlow[currentQuestionIndex].question, "bot");
+  } else {
+    addMessage("Initial case intake complete. Running TCI, TCA, RLE/RLI, FCI and EAS...", "bot");
+    runModels();
+    addMessage("Now I will start suspect interviews like real police.", "bot");
+    startSuspectInterviews();
+  }
+}
+
+function sendAnswer(){
+  let input = document.getElementById("chatInput");
+  let answer = input.value.trim();
+  if(!answer) return;
+
+  addMessage(answer, "user");
+  input.value = "";
+
+  let currentKey = questionFlow[currentQuestionIndex]?.key;
+
+  if(currentKey === "FIR") caseData.FIR = answer;
+  if(currentKey === "incidentType") caseData.incident.type = answer;
+  if(currentKey === "location") caseData.incident.location = answer;
+  if(currentKey === "date") caseData.incident.date = answer;
+  if(currentKey === "time") caseData.incident.time = answer;
+  if(currentKey === "weapon") caseData.incident.weapon = answer;
+  if(currentKey === "victimAlive") caseData.victim.alive = answer.toLowerCase();
+  if(currentKey === "statement") caseData.victim.statement = answer;
+
+  currentQuestionIndex++;
+
+  if(currentQuestionIndex < questionFlow.length){
+    askNextQuestion();
+  } else {
+    askNextQuestion();
+  }
+}
+
+/* =================== MODELS =================== */
+
+// TCI - FIR internal contradictions
+function TCI(){
+  let fir = (caseData.FIR || "").toLowerCase();
+  let issues = [];
+
+  if(fir.includes("morning") && fir.includes("midnight")) issues.push("Time contradiction inside FIR (morning + midnight).");
+  if(fir.includes("knife") && fir.includes("gun")) issues.push("Weapon contradiction inside FIR (knife + gun).");
+  if(fir.includes("inside") && fir.includes("outside")) issues.push("Place contradiction inside FIR (inside + outside).");
+
+  caseData.TCI = { status: issues.length ? "Inconsistent" : "Consistent", issues };
+}
+
+// TCA - FIR vs statement contradictions
+function TCA(){
+  let fir = (caseData.FIR || "").toLowerCase();
+  let stmt = (caseData.victim.statement || "").toLowerCase();
+  let contradictions = [];
+
+  if(fir.includes("knife") && stmt.includes("gun")) contradictions.push("Weapon mismatch: FIR says knife, statement says gun.");
+  if(fir.includes("gun") && stmt.includes("knife")) contradictions.push("Weapon mismatch: FIR says gun, statement says knife.");
+  if(fir.includes("night") && stmt.includes("morning")) contradictions.push("Time mismatch: FIR says night, statement says morning.");
+  if(fir.includes("morning") && stmt.includes("night")) contradictions.push("Time mismatch: FIR says morning, statement says night.");
+
+  caseData.TCA = { status: contradictions.length ? "Contradictions Found" : "Consistent", contradictions };
+}
+
+// RLE / RLI extraction
+function RLE(text){
+  let suspects = [];
+  let locations = [];
+  let traits = [];
+
+  if(!text) return {suspects, locations, traits};
+
+  const suspectTriggers = ["named","called","by","attacked","met","with","saw"];
+  const locationKeywords = ["mall","market","park","station","hospital","school","street","road","bridge"];
+  const traitKeywords = ["tall","short","beard","scar","jacket","mask","black","white","blue","red"];
+
+  let words = text.split(/\s+/);
+
+  words.forEach((word,i)=>{
+    if(suspectTriggers.includes(word.toLowerCase())){
+      let name = words[i+1] || "";
+      name = name.replace(/[^a-zA-Z]/g,"");
+      if(name.length>1) suspects.push(name);
     }
-});
+  });
 
-function TCI(caseData) {
-    let fir = caseData.FIR.toLowerCase();
-    let issues = [];
-    if(fir.includes("morning") && fir.includes("midnight")) issues.push("Time contradiction inside FIR.");
-    if(fir.includes("knife") && fir.includes("gun")) issues.push("Multiple weapon contradiction inside FIR.");
-    caseData.TCI = { status: issues.length===0 ? "Consistent" : "Inconsistent", issues };
-    return caseData;
+  locationKeywords.forEach(loc=>{
+    if(text.toLowerCase().includes(loc)) locations.push(loc);
+  });
+
+  traitKeywords.forEach(tr=>{
+    if(text.toLowerCase().includes(tr)) traits.push(tr);
+  });
+
+  return {
+    suspects: [...new Set(suspects)],
+    locations: [...new Set(locations)],
+    traits: [...new Set(traits)]
+  };
 }
 
-function TCA(caseData) {
-    let fir = caseData.FIR.toLowerCase();
-    let statement = (caseData.StatementUsed || "").toLowerCase();
-    let contradictions = [];
-    if(statement){
-        if(fir.includes("knife") && statement.includes("gun")) contradictions.push("Weapon mismatch between FIR and statement.");
-        if(fir.includes("night") && statement.includes("morning")) contradictions.push("Time mismatch between FIR and statement.");
+function RLI(){
+  let combined = (caseData.FIR || "") + " " + (caseData.victim.statement || "");
+  let extracted = RLE(combined);
+
+  extracted.suspects.forEach(name=>{
+    if(!caseData.suspects.some(s=>s.name.toLowerCase()===name.toLowerCase())){
+      caseData.suspects.push({
+        name,
+        reason: "Mentioned in FIR/Statement",
+        location: extracted.locations[0] || caseData.incident.location || "",
+        traits: extracted.traits,
+        contradictions: [],
+        alibi: "",
+        interviewStatement: "",
+        evidenceScore: 10,
+        finalScore: 0,
+        probability: 0
+      });
     }
-    caseData.TCA = { status: contradictions.length===0?"Consistent":"Contradictions Found", contradictions };
-    return caseData;
+  });
+
+  if(caseData.suspects.length === 0){
+    caseData.suspects.push({
+      name: "Unknown Individual",
+      reason: "No name found, only description available",
+      location: extracted.locations[0] || caseData.incident.location || "",
+      traits: extracted.traits,
+      contradictions: [],
+      alibi: "",
+      interviewStatement: "",
+      evidenceScore: 10,
+      finalScore: 0,
+      probability: 0
+    });
+  }
+
+  caseData.RLI = extracted;
 }
 
-function RLE(caseData){
-    let statement = caseData.StatementUsed||"";
-    let suspects=[],locations=[],traits=[];
-    if(!statement){ caseData.RLE={suspects,locations,traits}; return caseData; }
-    let sentences = statement.match(/[^\.!\?]+[\.!\?]*/g)||[statement];
-    const suspectTriggers=["by","with","met","saw","named"];
-    const locationKeywords=["mall","market","park","station","hospital","school"];
-    const traitKeywords=["tall","short","beard","scar","jacket","mask","black","white"];
+// FCI scoring
+function FCI(){
+  caseData.suspects.forEach((s,index)=>{
+    let score = 10;
+    if(s.name !== "Unknown Individual") score += 15;
+    if(s.location) score += 8;
+    score += s.traits.length * 5;
+    if(s.alibi === "") score += 10;
+    score += s.contradictions.length * 12;
+    score += index * 2;
+    s.evidenceScore = score;
+  });
 
-    sentences.forEach(sentence=>{
-        let words=sentence.split(/\s+/);
-        words.forEach((word,i)=>{
-            if(suspectTriggers.includes(word.toLowerCase())){
-                let possibleName=words[i+1]||"Unknown Individual";
-                if(possibleName.length>1 && !suspects.some(s=>s.name===possibleName)){
-                    suspects.push({name:possibleName,reason:"Mentioned in statement",location:null,traits:[]});
-                }
-            }
-        });
-        traitKeywords.forEach(trait=>{if(sentence.toLowerCase().includes(trait)) traits.push(trait);});
-        locationKeywords.forEach(loc=>{if(sentence.toLowerCase().includes(loc)) locations.push(loc);});
-    });
-
-    traits=[...new Set(traits)];
-    locations=[...new Set(locations)];
-    if(suspects.length===0 && traits.length>0) suspects.push({name:"Unknown Individual",reason:"Described by traits",location:locations[0]||null,traits});
-    suspects.forEach(s=>{s.location=locations[0]||s.location||null;s.traits=traits;});
-    caseData.RLE={suspects,locations,traits};
-    return caseData;
+  caseData.FCI = { suspects: caseData.suspects };
 }
 
-function FCI(caseData){
-    let suspects=caseData.RLE.suspects;
-    let baseScore=10;
-    suspects.forEach((s,index)=>{
-        let score=baseScore + s.traits.length*5 + (s.location?5:0) + index*2 + (s.name!=="Unknown Individual"?5:0);
-        s.evidenceScore=score;
-    });
-    caseData.FCI={suspects,totalScore:suspects.reduce((acc,s)=>acc+s.evidenceScore,0)};
-    return caseData;
+// EAS scoring
+function EAS(){
+  let total = 0;
+
+  caseData.suspects.forEach(s=>{
+    let weight = 1;
+    if(s.traits.length) weight += 0.2 * s.traits.length;
+    if(s.location) weight += 0.3;
+    if(s.alibi === "") weight += 0.4;
+    if(s.interviewStatement) weight += 0.5;
+    if(s.contradictions.length) weight += 0.5;
+
+    s.finalScore = Math.round(s.evidenceScore * weight);
+    total += s.finalScore;
+  });
+
+  caseData.suspects.forEach(s=>{
+    s.probability = total ? Math.round((s.finalScore / total) * 100) : 0;
+  });
+
+  caseData.EAS = { totalEvidenceScore: total };
 }
 
-function EAS(caseData){
-    if(!caseData.RLE?.suspects) return caseData;
-    let totalEvidence=0;
-    let highPrioritySuspects=[];
-    caseData.RLE.suspects.forEach(s=>{
-        let weight=1;
-        if(s.traits.length) weight+=0.2*s.traits.length;
-        if(s.location) weight+=0.3;
-        if(s.interviewStatement) weight+=0.5;
-        s.finalScore=Math.round(s.evidenceScore*weight);
-        totalEvidence+=s.finalScore;
-        if(s.finalScore>=40) highPrioritySuspects.push(s.name);
-    });
-    caseData.EAS={totalEvidenceScore:totalEvidence,highPrioritySuspects};
-    return caseData;
+function runModels(){
+  TCI();
+  TCA();
+  RLI();
+  FCI();
+  EAS();
+  renderOutput();
+}
+
+/* =================== OUTPUT =================== */
+function renderOutput(){
+  const outputDiv = document.getElementById("output");
+
+  outputDiv.innerHTML = `
+    <h3>Investigation Report</h3>
+
+    <p><b>Stage:</b> ${caseData.stage}</p>
+
+    <h4>TCI (FIR Consistency)</h4>
+    <p><b>Status:</b> ${caseData.TCI?.status}</p>
+    <p>${caseData.TCI?.issues?.join("<br>") || "No contradictions found."}</p>
+
+    <h4>TCA (FIR vs Statement)</h4>
+    <p><b>Status:</b> ${caseData.TCA?.status}</p>
+    <p>${caseData.TCA?.contradictions?.join("<br>") || "No contradictions found."}</p>
+
+    <h4>RLI / RLE Extracted Leads</h4>
+    <p><b>Suspects:</b> ${(caseData.RLI?.suspects || []).join(", ") || "None"}</p>
+    <p><b>Traits:</b> ${(caseData.RLI?.traits || []).join(", ") || "None"}</p>
+    <p><b>Locations:</b> ${(caseData.RLI?.locations || []).join(", ") || "None"}</p>
+
+    <h4>Suspects & Probability (FCI + EAS)</h4>
+    ${caseData.suspects.map(s=>`
+      <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:10px; background:#fff;">
+        <b>Name:</b> ${s.name}<br>
+        <b>Reason:</b> ${s.reason}<br>
+        <b>Location:</b> ${s.location || "Unknown"}<br>
+        <b>Traits:</b> ${s.traits.join(", ") || "None"}<br>
+        <b>Evidence Score (FCI):</b> ${s.evidenceScore}<br>
+        <b>Final Score (EAS):</b> ${s.finalScore}<br>
+        <b>Probability:</b> ${s.probability}%<br>
+        <b>Alibi:</b> ${s.alibi || "Not given"}<br>
+        <b>Contradictions:</b> ${s.contradictions.join(", ") || "None"}<br>
+      </div>
+    `).join("")}
+
+    <p><b>Total Evidence Score:</b> ${caseData.EAS?.totalEvidenceScore || 0}</p>
+  `;
+}
+
+/* =================== SUSPECT INTERVIEW SYSTEM =================== */
+
+function startSuspectInterviews(){
+  caseData.stage = "Suspect Interviews";
+  runModels();
+  SIM();
 }
 
 function SIM(){
-    if(!caseData.RLE?.suspects) return;
-    const section=document.getElementById("suspectInterviewSection");
-    section.innerHTML="<h3>Suspect Interviews</h3>";
-    caseData.RLE.suspects.forEach((s,index)=>{
-        section.innerHTML+=`
-        <div class="suspect-section">
-            <b>Suspect ${index+1}: ${s.name}</b><br>
-            <label>Interview Statement:</label><br>
-            <textarea id="suspectStmt_${index}" placeholder="Enter statement for ${s.name}"></textarea><br>
-            <button onclick="saveInterview(${index})">Save Statement</button>
-        </div>`;
-    });
+  const section = document.getElementById("suspectInterviewSection");
+  section.innerHTML = "";
+
+  caseData.suspects.forEach((s,index)=>{
+    section.innerHTML += `
+      <div class="suspect-section">
+        <b>Suspect ${index+1}: ${s.name}</b><br><br>
+
+        <label>Police Question:</label><br>
+        <i>Where were you on ${caseData.incident.date || "Unknown Date"} at ${caseData.incident.time || "Unknown Time"}?</i><br><br>
+
+        <textarea id="suspectStmt_${index}" placeholder="Enter statement of ${s.name}"></textarea>
+        <button onclick="saveInterview(${index})">Save Statement</button>
+      </div>
+    `;
+  });
 }
 
 function saveInterview(index){
-    let textarea=document.getElementById(`suspectStmt_${index}`);
-    if(!textarea) return;
-    let statement=textarea.value.trim();
-    if(!statement){ alert("Statement cannot be empty."); return; }
-    let s=caseData.RLE.suspects[index];
-    s.interviewStatement=statement;
+  let textarea = document.getElementById(`suspectStmt_${index}`);
+  if(!textarea) return;
 
-    let sentences=statement.match(/[^\.!\?]+[\.!\?]*/g)||[statement];
-    const traitKeywords=["tall","short","beard","scar","jacket","mask","black","white"];
-    const locationKeywords=["mall","market","park","station","hospital","school"];
-    const suspectTriggers=["by","with","met","saw","named"];
+  let statement = textarea.value.trim();
+  if(!statement){ alert("Statement cannot be empty."); return; }
 
-    sentences.forEach(sentence=>{
-        let words=sentence.split(/\s+/);
-        traitKeywords.forEach(trait=>{if(sentence.toLowerCase().includes(trait)&&!s.traits.includes(trait)) s.traits.push(trait);});
-        locationKeywords.forEach(loc=>{if(sentence.toLowerCase().includes(loc)&&!s.location) s.location=loc;});
-        words.forEach((word,i)=>{
-            if(suspectTriggers.includes(word.toLowerCase())){
-                let newName=words[i+1]||null;
-                if(newName&&!caseData.RLE.suspects.some(x=>x.name===newName)){
-                    caseData.RLE.suspects.push({name:newName,reason:"Mentioned in interview",location:null,traits:[]});
-                }
-            }
-        });
-    });
+  let suspect = caseData.suspects[index];
+  suspect.interviewStatement = statement;
+  suspect.alibi = statement;
 
-    updateFCIScores();
-    alert(`Statement for ${s.name} saved. Evidence scores updated.`);
+  // weak alibi detection
+  if(statement.toLowerCase().includes("alone")){
+    suspect.contradictions.push("Weak alibi: suspect claims alone, no witness.");
+  }
+
+  // extract new leads from suspect statement
+  let extracted = RLE(statement);
+
+  extracted.traits.forEach(t=>{
+    if(!suspect.traits.includes(t)) suspect.traits.push(t);
+  });
+
+  if(!suspect.location && extracted.locations.length>0){
+    suspect.location = extracted.locations[0];
+  }
+
+  extracted.suspects.forEach(name=>{
+    if(!caseData.suspects.some(s=>s.name.toLowerCase()===name.toLowerCase())){
+      caseData.suspects.push({
+        name,
+        reason: "Mentioned in suspect interview",
+        location: extracted.locations[0] || "",
+        traits: extracted.traits,
+        contradictions: [],
+        alibi: "",
+        interviewStatement: "",
+        evidenceScore: 10,
+        finalScore: 0,
+        probability: 0
+      });
+    }
+  });
+
+  runModels();
+  SIM();
+  alert("Statement saved. Scores updated (FCI + EAS).");
 }
 
-function updateFCIScores(){
-    FCI(caseData);
-    EAS(caseData);
-    renderOutput();
-    SIM();
-    localStorage.setItem("Current_Case",JSON.stringify(caseData));
-}
+/* =================== START =================== */
 
-function renderOutput(){
-    const outputDiv=document.getElementById("output");
-    if(!caseData) return;
-    outputDiv.innerHTML=`
-        <h3>Investigation Report</h3>
-        <p><b>TCI:</b> ${caseData.TCI?.status||"N/A"}</p>
-        <p><b>TCA:</b> ${caseData.TCA?.status||"N/A"}</p>
-        <h4>Suspects Identified:</h4>
-        ${caseData.RLE?.suspects.map(s=>`
-            Name: ${s.name}<br>
-            Reason: ${s.reason}<br>
-            Location: ${s.location||"Unknown"}<br>
-            Traits: ${s.traits.join(", ")||"None"}<br>
-            Evidence Score (FCI): ${s.evidenceScore}<br>
-            Final Score (EAS): ${s.finalScore||"N/A"}<br><br>
-        `).join("")||"None"}
-        <p><b>Total Case Evidence Score:</b> ${caseData.EAS?.totalEvidenceScore||0}</p>
-        <p><b>High-Priority Suspects:</b> ${caseData.EAS?.highPrioritySuspects.join(", ")||"None"}</p>
-    `;
-}
+addMessage("Welcome to ANVESHAN Intelligence.", "bot");
+addMessage("I will investigate like a real police officer. Answer step-by-step.", "bot");
+askNextQuestion();
 
-function execute(){
-    let fir=document.getElementById("firDetails").value.trim();
-    let victimAlive=document.getElementById("victimAlive").value;
-    if(!fir||!victimAlive){alert("Complete required fields."); return;}
-    let statementToCompare="",firFiler="";
-    if(victimAlive==="yes") statementToCompare=document.getElementById("victimStatement")?.value.trim()||"";
-    if(victimAlive==="no"){ firFiler=document.getElementById("firFiler")?.value.trim()||""; statementToCompare=document.getElementById("proxyStatement")?.value.trim()||"";}
-    caseData={FIR:fir,VictimAlive:victimAlive,FIR_Filer:firFiler,StatementUsed:statementToCompare};
-    caseData=TCI(caseData);
-    caseData=TCA(caseData);
-    caseData=RLE(caseData);
-    caseData=FCI(caseData);
-    caseData=EAS(caseData);
-    localStorage.setItem("Current_Case",JSON.stringify(caseData));
-    renderOutput();
-    SIM();
-}
-
-function caseController(){
-    execute();
-    let policeDecision=prompt("Police feedback:\n1 = Case solved\n2 = Predictions inaccurate, re-run\n3 = Provide more data");
-    if(policeDecision==="1"){alert("Case marked as SUCCESS. Pipeline terminated."); caseData.caseStatus="Solved";}
-    else if(policeDecision==="2"){alert("Re-running the pipeline based on AI predictions..."); caseData.caseStatus="Re-run requested"; execute(); caseController();}
-    else if(policeDecision==="3"){alert("Please provide more data or update statements."); caseData.caseStatus="Awaiting additional input";}
-    else{alert("Invalid input. Please choose 1, 2, or 3."); caseController();}
-    renderOutput();
-    localStorage.setItem("Current_Case",JSON.stringify(caseData));
-}
 </script>
+
 </body>
 </html>
