@@ -183,12 +183,38 @@ function RLE(caseData){
     const locationKeywords=["mall","market","park","station","hospital","school","bridge","street","road"];
     const traitKeywords=["tall","short","beard","scar","jacket","mask","black","white","blue","red"];
 
-    // ❌ stopwords that should NEVER be treated as suspect names
     const invalidNames = [
       "me","him","her","them","they","he","she","i","we","you","my","your",
       "man","woman","person","guy","boy","girl","beard","scar","mask","jacket",
       "knife","gun","road","market","station"
     ];
+
+    // NEW: name detection patterns
+    const namePatterns = [
+      /name\s+is\s+([A-Z][a-z]+)/g,
+      /name\s+might\s+be\s+([A-Z][a-z]+)/g,
+      /name\s+could\s+be\s+([A-Z][a-z]+)/g,
+      /called\s+([A-Z][a-z]+)/g,
+      /shouted\s+([A-Z][a-z]+)/g,
+      /known\s+as\s+([A-Z][a-z]+)/g
+    ];
+
+    // Detect suspects using regex patterns
+    namePatterns.forEach(pattern=>{
+      let match;
+      while((match = pattern.exec(statement)) !== null){
+        let foundName = match[1];
+        let lower = foundName.toLowerCase();
+        if(!invalidNames.includes(lower) && !suspects.some(s=>s.name.toLowerCase()===lower)){
+          suspects.push({
+            name: foundName,
+            reason: "Detected from name pattern in statement",
+            location: null,
+            traits: []
+          });
+        }
+      }
+    });
 
     sentences.forEach(sentence=>{
         let words=sentence.split(/\s+/);
@@ -202,9 +228,7 @@ function RLE(caseData){
                 if(possibleName.length>1){
                     let lower = possibleName.toLowerCase();
 
-                    // Reject invalid names
                     if(!invalidNames.includes(lower)){
-                        // Only accept if starts with capital OR length > 3
                         if(possibleName[0] === possibleName[0].toUpperCase() || possibleName.length > 3){
                             if(!suspects.some(s=>s.name.toLowerCase()===lower)){
                                 suspects.push({
@@ -232,7 +256,6 @@ function RLE(caseData){
     traits=[...new Set(traits)];
     locations=[...new Set(locations)];
 
-    // If still no suspect name found, create Unknown Individual
     if(suspects.length===0 && traits.length>0){
       suspects.push({
         name:"Unknown Individual",
@@ -250,7 +273,6 @@ function RLE(caseData){
     caseData.RLE={suspects,locations,traits};
     return caseData;
 }
-
 function FCI(caseData){
     let suspects=caseData.RLE.suspects;
     let baseScore=10;
