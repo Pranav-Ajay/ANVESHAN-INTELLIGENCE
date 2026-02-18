@@ -120,7 +120,6 @@ let policeMode = {
   pendingQuestion: null
 };
 
-// HISTORY PANEL LOGGER
 function addHistory(text){
   let ol = document.getElementById("y");
   let li = document.createElement("li");
@@ -129,7 +128,6 @@ function addHistory(text){
   ol.appendChild(li);
 }
 
-// DYNAMIC VICTIM SECTION
 document.getElementById("victimAlive").addEventListener("change", function() {
     let status = this.value;
     let section = document.getElementById("dynamicSection");
@@ -143,10 +141,6 @@ document.getElementById("victimAlive").addEventListener("change", function() {
                              <textarea id="proxyStatement"></textarea>`;
     }
 });
-
-/* ==========================
-   MODELS (YOUR ORIGINAL)
-========================== */
 
 function TCI(caseData) {
     let fir = caseData.FIR.toLowerCase();
@@ -189,7 +183,6 @@ function RLE(caseData){
       "knife","gun","road","market","station"
     ];
 
-    // NEW: name detection patterns
     const namePatterns = [
       /name\s+is\s+([A-Z][a-z]+)/g,
       /name\s+might\s+be\s+([A-Z][a-z]+)/g,
@@ -199,7 +192,6 @@ function RLE(caseData){
       /known\s+as\s+([A-Z][a-z]+)/g
     ];
 
-    // Detect suspects using regex patterns
     namePatterns.forEach(pattern=>{
       let match;
       while((match = pattern.exec(statement)) !== null){
@@ -304,15 +296,10 @@ function EAS(caseData){
     return caseData;
 }
 
-/* ==========================
-   POLICE ITERATIVE ENGINE
-========================== */
 function policeQuestionEngine(){
 
-  // initialize stage
   if(!caseData.stage) caseData.stage = "interview";
 
-  // contradictions based follow-ups
   if(caseData.TCI?.issues?.length){
     caseData.stage = "contradiction";
     return "Your FIR has contradictions: " + caseData.TCI.issues.join(" | ") + ". Please clarify correct details.";
@@ -323,13 +310,11 @@ function policeQuestionEngine(){
     return "Contradiction found between FIR and statement: " + caseData.TCA.contradictions.join(" | ") + ". Which is correct?";
   }
 
-  // if no suspects
   if(!caseData.RLE?.suspects || caseData.RLE.suspects.length===0){
     caseData.stage = "suspect_discovery";
     return "No suspects identified. Did the victim mention any name, relationship, or dispute?";
   }
 
-  // interview stage
   if(caseData.stage === "interview"){
     let pending = caseData.RLE.suspects.find(s=>!s.interviewStatement);
     if(pending){
@@ -339,7 +324,6 @@ function policeQuestionEngine(){
     }
   }
 
-  // evidence stage
   if(caseData.stage === "evidence"){
     if(!caseData.externalEvidence){
       return "All suspects interviewed. Do you have CCTV evidence, call records, or witness names to verify alibis?";
@@ -348,12 +332,10 @@ function policeQuestionEngine(){
     }
   }
 
-  // analysis stage
   if(caseData.stage === "analysis"){
     return "Evidence recorded. Do you want to re-check suspects or finalize the probability ranking?";
   }
 
-  // final stage
   if(caseData.stage === "conclusion"){
     return "Case is ready for conclusion. Would you like to mark the case as solved?";
   }
@@ -376,9 +358,6 @@ function updateFromPoliceAnswer(answer){
 
   caseData.StatementUsed += " " + answer;
 
-  // ---------------------------
-  // ANALYSIS STAGE USER DECISION
-  // ---------------------------
   if(caseData.stage === "analysis"){
     if(answer.toLowerCase().includes("final")){
         caseData.stage = "final";
@@ -389,23 +368,17 @@ function updateFromPoliceAnswer(answer){
         return;
     }
     else{
-        // if user says something unclear
         return;
     }
   }
 
-  // ---------------------------
-  // EVIDENCE STAGE
-  // ---------------------------
+
   if(caseData.stage === "evidence"){
       caseData.externalEvidence = answer;
       caseData.stage = "analysis";
       return;
   }
 
-  // ---------------------------
-  // INTERVIEW STAGE
-  // ---------------------------
   let pendingIndex = caseData.RLE.suspects.findIndex(s=>!s.interviewStatement);
 
   if(pendingIndex !== -1){
@@ -419,10 +392,6 @@ function updateFromPoliceAnswer(answer){
       }
   }
 }
-/* ==========================
-   RENDER OUTPUT
-========================== */
-
 function renderOutput(){
     const outputDiv=document.getElementById("output");
     if(!caseData) return;
@@ -451,24 +420,7 @@ function renderOutput(){
     `;
 }
 
-/* ==========================
-   SUSPECT INTERVIEW UI (SAME)
-========================== */
 
-function SIM(){
-    if(!caseData.RLE?.suspects) return;
-    const section=document.getElementById("suspectInterviewSection");
-    section.innerHTML="<h3>Suspect Interviews</h3>";
-    caseData.RLE.suspects.forEach((s,index)=>{
-        section.innerHTML+=`
-        <div class="suspect-section">
-            <b>Suspect ${index+1}: ${s.name}</b><br>
-            <label>Interview Statement:</label><br>
-            <textarea id="suspectStmt_${index}" placeholder="Enter statement for ${s.name}"></textarea><br>
-            <button onclick="saveInterview(${index})">Save Statement</button>
-        </div>`;
-    });
-}
 
 function saveInterview(index){
     let textarea=document.getElementById(`suspectStmt_${index}`);
@@ -485,7 +437,6 @@ function saveInterview(index){
       s.contradictions.push("Weak alibi: claims alone.");
     }
 
-    // Extract new suspects from interview
     let tmpCase = {StatementUsed: statement};
     tmpCase = RLE(tmpCase);
 
@@ -501,7 +452,6 @@ function saveInterview(index){
       }
     });
 
-    // Update traits and location
     tmpCase.RLE.traits.forEach(tr=>{
       if(!s.traits.includes(tr)) s.traits.push(tr);
     });
@@ -531,7 +481,7 @@ function updatePipeline(){
 
   caseData = RLE(caseData);
 
-  // MERGE interviews back after RLE refresh
+
   if(oldSuspects.length > 0){
     caseData.RLE.suspects = mergeSuspects(oldSuspects, caseData.RLE.suspects);
   }
@@ -543,10 +493,6 @@ function updatePipeline(){
   renderOutput();
   SIM();
 }
-
-/* ==========================
-   EXECUTE (FORM BASED)
-========================== */
 
 function execute(){
     let fir=document.getElementById("firDetails").value.trim();
@@ -575,14 +521,9 @@ function execute(){
     updatePipeline();
 }
 
-/* ==========================
-   CASE CONTROLLER (CHAT DRIVEN)
-========================== */
-
 function caseController(){
     let chatAnswer = document.getElementById("chatInput").value.trim();
 
-    // First run: if case not started, execute form
     if(!policeMode.active){
       execute();
       policeMode.active = true;
@@ -592,7 +533,6 @@ function caseController(){
       return;
     }
 
-    // If already active, treat chat input as police answer
     if(chatAnswer){
       addHistory("USER: " + chatAnswer);
       updateFromPoliceAnswer(chatAnswer);
@@ -603,7 +543,6 @@ function caseController(){
       return;
     }
 
-    // fallback
     alert("Enter answer in chat input.");
 }
 
