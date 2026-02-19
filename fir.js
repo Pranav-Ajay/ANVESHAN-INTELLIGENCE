@@ -71,7 +71,7 @@ function create() {
     doc.setFontSize(11);
 
     y += 8;
-    doc.text("Day: " + getDayName(), 20, y);
+    doc.text("Day: " + getDayName(name2), 20, y);
     doc.text("Date: " + , 80, y);
 
     y += 7;
