@@ -35,8 +35,9 @@ function create() {
     let name8=document.getElementById("nation").value;
     
     let name9=document.getElementById("age").value;
+
+    let name10=document.getElementById("HusbandName").value;
     
-  
   
     doc.setFont("helvetica", "normal");
 
@@ -91,7 +92,7 @@ function create() {
     doc.setFontSize(11);
 
     y += 8;
-    doc.text("Address: " + address, 20, y);
+    doc.text("Address: " + name5, 20, y);
 
     y += 12;
     doc.setFontSize(12);
@@ -103,8 +104,8 @@ function create() {
     y += 7;
     doc.text("Father/Husband Name: " + name2, 20, y);
     y += 7;
-    doc.text("DOB: " + name3 , 20, y);
-    doc.text("Nationality: " + name4, 120, y);
+    doc.text("DOB: " + name7 , 20, y);
+    doc.text("Nationality: " + name8, 120, y);
 
     y += 20;
     doc.text("Signature of Complainant:", 20, y);
