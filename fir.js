@@ -18,10 +18,29 @@ function create() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    let e = [];
-    for (let i = 1; i <= 21; i++) {
-        e[i] = document.getElementById(i.toString())?.value || "";
-    }
+    let name1=document.getElementById("complaint name").value;
+    
+    let name2=document.getElementById("complaint name").value;
+    
+    let name3=document.getElementById("complaint name").value;
+    
+    let name4=document.getElementById("complaint name").value;
+    
+    let name5=document.getElementById("complaint name").value;
+    
+    let name6=document.getElementById("complaint name").value;
+    
+    let name7=document.getElementById("complaint name").value;
+    
+    let name8=document.getElementById("complaint name").value;
+    
+    let name9=document.getElementById("complaint name").value;
+    
+    let name10=document.getElementById("complaint name").value;
+    
+    let name11=document.getElementById("complaint name").value;
+    
+    
 
     doc.setFont("helvetica", "normal");
 
