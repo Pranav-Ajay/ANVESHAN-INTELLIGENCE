@@ -72,7 +72,7 @@ function create() {
 
     y += 8;
     doc.text("Day: " + getDayName(name2), 20, y);
-    doc.text("Date: " + , 80, y);
+    doc.text("Date: " + name2 , 80, y);
 
     y += 7;
     doc.text("Time From: " + name3, 20, y);
