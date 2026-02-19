@@ -14,6 +14,7 @@ function getDayName(dateString) {
     return days[new Date(dateString).getDay()];
 }
 
+function create() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
