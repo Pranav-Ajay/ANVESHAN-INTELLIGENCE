@@ -18,30 +18,26 @@ function create() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    let name1=document.getElementById("complaint name").value;
+    let name1=document.getElementById("complainantName").value;
     
-    let name2=document.getElementById("complaint name").value;
+    let name2=document.getElementById("date").value;
     
-    let name3=document.getElementById("complaint name").value;
+    let name3=document.getElementById("startTime").value;
     
-    let name4=document.getElementById("complaint name").value;
+    let name4=document.getElementById("endTime").value;
     
-    let name5=document.getElementById("complaint name").value;
+    let name5=document.getElementById("address").value;
     
-    let name6=document.getElementById("complaint name").value;
+    let name6=document.getElementById("HusbandName").value;
     
-    let name7=document.getElementById("complaint name").value;
+    let name7=document.getElementById("dob").value;
     
-    let name8=document.getElementById("complaint name").value;
+    let name8=document.getElementById("nation").value;
     
-    let name9=document.getElementById("complaint name").value;
+    let name9=document.getElementById("age").value;
     
-    let name10=document.getElementById("complaint name").value;
-    
-    let name11=document.getElementById("complaint name").value;
-    
-    
-
+  
+  
     doc.setFont("helvetica", "normal");
 
     doc.setFontSize(16);
@@ -79,8 +75,8 @@ function create() {
     doc.text("Date: " + , 80, y);
 
     y += 7;
-    doc.text("Time From: " + , 20, y);
-    doc.text("Time To: " + , 120, y);
+    doc.text("Time From: " + name3, 20, y);
+    doc.text("Time To: " + name4, 120, y);
 
     y += 7;
     doc.text("Information received at P.S.: " + getCurrentDateTime(), 20, y);
@@ -95,7 +91,7 @@ function create() {
     doc.setFontSize(11);
 
     y += 8;
-    doc.text("Address: " + , 20, y);
+    doc.text("Address: " + address, 20, y);
 
     y += 12;
     doc.setFontSize(12);
@@ -103,12 +99,12 @@ function create() {
     doc.setFontSize(11);
 
     y += 8;
-    doc.text("Name: " + , 20, y);
+    doc.text("Name: " + name1 , 20, y);
     y += 7;
-    doc.text("Father/Husband Name: " + e[2], 20, y);
+    doc.text("Father/Husband Name: " + name2, 20, y);
     y += 7;
-    doc.text("DOB: " + , 20, y);
-    doc.text("Nationality: " +, 120, y);
+    doc.text("DOB: " + name3 , 20, y);
+    doc.text("Nationality: " + name4, 120, y);
 
     y += 20;
     doc.text("Signature of Complainant:", 20, y);
