@@ -58,12 +58,12 @@ function create() {
     doc.setFontSize(11);
 
     y += 8;
-    doc.text("Day: " + getDayName(e[15]), 20, y);
-    doc.text("Date: " + e[15], 80, y);
+    doc.text("Day: " + getDayName(), 20, y);
+    doc.text("Date: " + , 80, y);
 
     y += 7;
-    doc.text("Time From: " + e[16], 20, y);
-    doc.text("Time To: " + e[17], 120, y);
+    doc.text("Time From: " + , 20, y);
+    doc.text("Time To: " + , 120, y);
 
     y += 7;
     doc.text("Information received at P.S.: " + getCurrentDateTime(), 20, y);
@@ -78,7 +78,7 @@ function create() {
     doc.setFontSize(11);
 
     y += 8;
-    doc.text("Address: " + e[8], 20, y);
+    doc.text("Address: " + , 20, y);
 
     y += 12;
     doc.setFontSize(12);
@@ -86,12 +86,12 @@ function create() {
     doc.setFontSize(11);
 
     y += 8;
-    doc.text("Name: " + e[1], 20, y);
+    doc.text("Name: " + , 20, y);
     y += 7;
     doc.text("Father/Husband Name: " + e[2], 20, y);
     y += 7;
-    doc.text("DOB: " + e[3], 20, y);
-    doc.text("Nationality: " + e[4], 120, y);
+    doc.text("DOB: " + , 20, y);
+    doc.text("Nationality: " +, 120, y);
 
     y += 20;
     doc.text("Signature of Complainant:", 20, y);
@@ -125,6 +125,4 @@ function create() {
    a.download = "FIR_Report_2026.pdf";  
    a.click();
    alert("pdf saved");
-   localStorage.removeItem("fir");
-   localStorage.setItem("fir",a.download);
   }
