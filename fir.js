@@ -1,5 +1,3 @@
-src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
-
 function getCurrentDateTime() {
     const now = new Date();
     const day = String(now.getDate()).padStart(2, '0');
@@ -16,7 +14,6 @@ function getDayName(dateString) {
     return days[new Date(dateString).getDay()];
 }
 
-function create() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
