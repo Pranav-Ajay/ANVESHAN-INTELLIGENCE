@@ -102,7 +102,7 @@ function create() {
     y += 8;
     doc.text("Name: " + name1 , 20, y);
     y += 7;
-    doc.text("Father/Husband Name: " + name2, 20, y);
+    doc.text("Father/Husband Name: " + name10, 20, y);
     y += 7;
     doc.text("DOB: " + name7 , 20, y);
     doc.text("Nationality: " + name8, 120, y);
